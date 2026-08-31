@@ -205,70 +205,107 @@ const PrintStation = () => {
   }
 
   return (
-    <div className="print-container" style={{ backgroundColor: '#ccc', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+    <div className="print-container" style={{ backgroundColor: '#333', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
       
       {/* Print Layout Styling */}
       <style>{`
         @media print {
-          @page { margin: 0; size: auto; }
-          body { background: #fff; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          @page { margin: 0; size: 6in 4in landscape; }
+          body { background: #f4f0ec; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
-          .print-container { background: #fff !important; padding: 0 !important; align-items: flex-start !important; }
+          .print-container { background: #f4f0ec !important; padding: 0 !important; align-items: center !important; justify-content: center !important; }
         }
         
         .print-page {
-          width: 2.2in;
-          height: auto;
-          min-height: 6.5in;
-          background: #fff;
-          display: flex;
-          flex-direction: column;
-          padding: 0.15in;
-          gap: 0.1in;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          width: 6in;
+          height: 4in;
+          background: #f4f0ec;
+          display: grid;
+          grid-template-columns: 0.6in 1fr 1.6in;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
           box-sizing: border-box;
+          padding: 0.25in 0;
           margin: 0 auto;
         }
         
         @media print {
-          .print-page { box-shadow: none; margin: 0.2in auto; }
+          .print-page { box-shadow: none; margin: 0; }
+        }
+
+        .sidebar-left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        }
+        
+        .sidebar-left h2 {
+          transform: rotate(-90deg);
+          white-space: nowrap;
+          font-family: 'Times New Roman', Times, serif;
+          font-size: 0.9rem;
+          font-weight: 400;
+          letter-spacing: 4px;
+          color: #222;
+          margin: 0;
+        }
+
+        .photo-area {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: 2.2fr 1fr;
+          gap: 0.1in;
+          height: 100%;
         }
 
         .photo-wrapper {
-          width: 100%;
-          aspect-ratio: 4/3;
-          background-color: #f0f0f0;
+          background-color: #e0dcd5;
           overflow: hidden;
-          border-radius: 6px;
         }
         
+        .hero-photo {
+          grid-column: 1 / span 3;
+        }
+
         .photo-wrapper img {
           width: 100%;
           height: 100%;
           object-fit: cover;
         }
 
-        .strip-footer {
+        .sidebar-right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 0 0.1in;
           text-align: center;
-          margin-top: 0.1in;
-          padding-bottom: 0.05in;
         }
         
-        .strip-footer h2 {
+        .sidebar-right h3 {
           margin: 0;
           font-family: var(--font-cursive), 'Brush Script MT', cursive;
           font-size: 1.4rem;
-          color: #000;
+          font-weight: normal;
+          color: #222;
           line-height: 1.2;
+          transform: rotate(-3deg);
         }
         
-        .strip-footer p {
-          margin: 4px 0 0 0;
-          font-size: 0.55rem;
-          color: #555;
-          font-family: sans-serif;
+        .sidebar-right .divider {
+          width: 0.5in;
+          height: 1px;
+          background: #444;
+          margin: 0.2in auto;
+        }
+        
+        .sidebar-right p {
+          margin: 0;
+          font-size: 0.45rem;
+          color: #444;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          letter-spacing: 1.5px;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
         }
       `}</style>
 
@@ -283,17 +320,26 @@ const PrintStation = () => {
       </div>
 
       <div className="print-page">
-        {/* Render exactly 4 photos as a single strip */}
-        {printPhotos.slice(0, 4).map((url, idx) => (
-          <div key={idx} className="photo-wrapper">
-            <img src={url} alt={`print-${idx}`} />
-          </div>
-        ))}
+        {/* Left Sidebar (Couple Names) */}
+        <div className="sidebar-left">
+          <h2>TOEY + TAI</h2>
+        </div>
+
+        {/* Center Photo Grid (1 Large, 3 Small) */}
+        <div className="photo-area">
+          {printPhotos.slice(0, 4).map((url, idx) => (
+            <div key={idx} className={`photo-wrapper ${idx === 0 ? 'hero-photo' : ''}`}>
+              <img src={url} alt={`print-${idx}`} />
+            </div>
+          ))}
+        </div>
         
-        {/* Footer Text / Logo */}
-        <div className="strip-footer">
-          <h2>T&T Wedding</h2>
-          <p>{new Date(record.created_at).toLocaleDateString('th-TH')} • {record.name}</p>
+        {/* Right Sidebar (Thank You Message) */}
+        <div className="sidebar-right">
+          <h3>Thank you for your<br/>love and support</h3>
+          <div className="divider"></div>
+          <p>{new Date(record.created_at).toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.')}</p>
+          <p style={{ marginTop: '8px' }}>{record.name}</p>
         </div>
       </div>
     </div>
