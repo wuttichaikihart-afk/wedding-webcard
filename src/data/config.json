@@ -1,0 +1,137 @@
+{
+  "siteTitle": "Wedding Toey & Taii",
+  "theme": {
+    "colors": {
+      "primary": "#e8a8b8",
+      "primaryLight": "#fce8ed",
+      "primaryDark": "#c46d82",
+      "secondary": "#fdf0f4",
+      "secondaryAlt": "#ffffff",
+      "textMain": "#4a3038",
+      "textLight": "#d47a90",
+      "bgColor": "#fff5f7",
+      "borderColor": "#f0c4cf"
+    },
+    "fonts": {
+      "heading": "'Playfair Display', serif",
+      "body": "'Prompt', sans-serif",
+      "cursive": "'Cinzel', serif"
+    }
+  },
+  "envelope": {
+    "topText": "You're Invited",
+    "sealText": "T&T",
+    "bottomText": "Click to Open"
+  },
+  "hero": {
+    "subtitle": "We Are Getting Married",
+    "name1": "Toey",
+    "name2": "Taii",
+    "date": "19.December.2026",
+    "location": "Aranyaprathet, Sa Kaeo",
+    "backgroundImage": "main_cover.JPG",
+    "logoChar1": "T",
+    "logoSymbol": "&",
+    "logoChar2": "T"
+  },
+  "timeline": [
+    {
+      "time": "07:09",
+      "title": "พิธีสงฆ์",
+      "description": "",
+      "icon": "Clock"
+    },
+    {
+      "time": "09:09",
+      "title": "แห่ขันหมาก",
+      "description": "",
+      "icon": "Heart"
+    },
+    {
+      "time": "09:39",
+      "title": "พิธีปูเรียงสินสอด สวมแหวนหมั้น รับไหว้",
+      "description": "",
+      "icon": "Heart"
+    },
+    {
+      "time": "10:00",
+      "title": "บายศรีสู่ขวัญ",
+      "description": "",
+      "icon": "Heart"
+    },
+    {
+      "time": "10:30",
+      "title": "รับไหว้",
+      "description": "",
+      "icon": "Heart"
+    },
+    {
+      "time": "11:00",
+      "title": "ผูกแขน-หลั่งน้ำสังข์",
+      "description": "",
+      "icon": "Heart"
+    },
+    {
+      "time": "18:00",
+      "title": "ฉลองมงคลสมรส",
+      "description": "",
+      "icon": "Utensils"
+    },
+    {
+      "time": "19:00",
+      "title": "After Party",
+      "description": "สนุกสนานกับวงดนตรีสด",
+      "icon": "Music"
+    }
+  ],
+  "location": {
+    "title": "Location",
+    "subtitle": "สถานที่จัดงาน",
+    "venueName": "อรัญประเทศ",
+    "venueAddress": "อำเภออรัญประเทศ<br/>จังหวัดสระแก้ว",
+    "mapLink1": "https://maps.app.goo.gl/Hi7p29TXgaLWmjQU8",
+    "mapLabel1": "เปิดนำทางสถานที่จัดงาน",
+    "mapLink2": "https://maps.app.goo.gl/CdjJ9b8XqNmtYBpB8",
+    "mapLabel2": "ฉลองมงคลสมรส"
+  },
+  "countdown": {
+    "title": "Countdown to Our Big Day",
+    "dateText": "19.December. 2026",
+    "targetDate": "2026-12-19T00:00:00"
+  },
+  "dressCode": {
+    "title": "Dress Code",
+    "subtitle": "โทนสีเสื้อผ้า",
+    "colors": [
+      {
+        "color": "#e8c8c8",
+        "label": "Blush Pink"
+      },
+      {
+        "color": "#fbf4e8",
+        "label": "Ivory"
+      },
+      {
+        "color": "#c5a57a",
+        "label": "Champagne"
+      },
+      {
+        "color": "#7a5948",
+        "label": "Mocha"
+      }
+    ]
+  },
+  "gift": {
+    "bankName": "ธนาคารกรุงศรี (Krungsri)",
+    "accountNumber": "281-1-37864-8",
+    "accountName": "นาย วุฒิชัย เจิมเกาะ",
+    "displayMode": "auto"
+  },
+  "footer": {
+    "copyrightText": "© 2026 Toey & Taii Wedding. All rights reserved."
+  },
+  "database": {
+    "supabaseUrl": "https://vnefqflyibkbsewwfjtq.supabase.co",
+    "supabaseAnonKey": "sb_publishable_MnbH_pjNnaJJraJR747ZUw_OLUPN1Ni"
+  }
+}

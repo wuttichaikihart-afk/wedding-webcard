@@ -1,5 +1,15 @@
+// ==========================================
+// Countdown.jsx — นับถอยหลังวันงาน + ธีมสีเสื้อผ้า (Dress Code)
+// ==========================================
+// แก้ไขได้ที่ส่วนนี้:
+//   - วันที่นับถอยหลัง: แก้ค่า targetDate (บรรทัด new Date(...))
+//   - ข้อความหัวข้อ "Countdown to Our Big Day": แก้ใน <h2> ด้านล่าง
+//   - วันที่แสดงใต้หัวข้อ "19 ธันวาคม 2569": แก้ใน <p> ด้านล่าง
+//   - ธีมสีวงกลม Dress Code: แก้ค่า color: '#FADCDC' ฯลฯ ในส่วน Dress Code
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import config from '../data/config.json';
 
 const Countdown = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -10,19 +20,23 @@ const Countdown = () => {
   });
 
   useEffect(() => {
-    // 19 December 2026 (Midnight)
-    const targetDate = new Date('2026-12-19T00:00:00').getTime();
+    // ==========================================
+    // กำหนดวันที่งาน (Target Date)
+    // ==========================================
+    const targetDate = new Date(config.countdown.targetDate).getTime(); // ← แก้วันงานที่ Admin Panel
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate - now;
 
+      // ถ้าถึงวันงานแล้ว ให้หยุดนับ
       if (distance < 0) {
         clearInterval(interval);
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         return;
       }
 
+      // คำนวณเวลาที่เหลือ
       setTimeLeft({
         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
         hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
@@ -34,30 +48,43 @@ const Countdown = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // ==========================================
+  // ป้ายกำกับใต้ตัวเลข (ภาษาอังกฤษ + ภาษาไทย)
+  // แก้คำภาษาไทยในช่อง labelTh ได้เลย
+  // ==========================================
   const timeUnits = [
-    { label: 'Days', value: timeLeft.days, labelTh: 'วัน' },
-    { label: 'Hours', value: timeLeft.hours, labelTh: 'ชั่วโมง' },
-    { label: 'Mins', value: timeLeft.minutes, labelTh: 'นาที' },
-    { label: 'Secs', value: timeLeft.seconds, labelTh: 'วินาที' }
+    { label: 'Days',  value: timeLeft.days,    labelTh: 'วัน' },
+    { label: 'Hours', value: timeLeft.hours,   labelTh: 'ชั่วโมง' },
+    { label: 'Mins',  value: timeLeft.minutes, labelTh: 'นาที' },
+    { label: 'Secs',  value: timeLeft.seconds, labelTh: 'วินาที' }
   ];
 
   return (
     <section className="section-padding" style={{ backgroundColor: 'var(--secondary)' }}>
       <div className="container text-center">
+
+        {/* ==========================================
+            หัวข้อและวันที่
+            แก้ข้อความในแท็ก <h2> และ <p> ด้านล่าง
+        ========================================== */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 style={{ fontFamily: 'var(--font-heading)', color: 'var(--primary)', marginBottom: '10px', fontSize: '2rem' }}>
-            Countdown to Our Big Day
+          <h2 className="section-title">
+            {config.countdown.title}
           </h2>
-          <p style={{ color: 'var(--text-light)', marginBottom: '40px', fontSize: '1.1rem' }}>
-            19 ธันวาคม 2569
+          <p className="section-subtitle" style={{ marginBottom: '40px' }}>
+            {config.countdown.dateText}
           </p>
         </motion.div>
 
+        {/* ==========================================
+            กล่องตัวเลขนับถอยหลัง (Days / Hours / Mins / Secs)
+            ระบบจะนับค่าอัตโนมัติจาก targetDate ด้านบน
+        ========================================== */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -73,31 +100,157 @@ const Countdown = () => {
           {timeUnits.map((unit, index) => (
             <div 
               key={index} 
-              className="glass-panel"
+              className="wedding-frame"
               style={{
-                width: '90px',
-                height: '100px',
+                width: '100px',
+                height: '110px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'var(--white)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '12px',
-                boxShadow: 'var(--shadow-sm)'
+                padding: '10px'
               }}
             >
-              <span style={{ fontSize: '2rem', fontWeight: '500', color: 'var(--primary-dark)', lineHeight: '1.2' }}>
+              {/* ตัวเลข */}
+              <span style={{ fontSize: '2.2rem', fontWeight: '600', color: 'var(--primary-dark)', lineHeight: '1.1', textShadow: '0 2px 4px rgba(196, 109, 130, 0.15)' }}>
                 {String(unit.value).padStart(2, '0')}
               </span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+              {/* ป้ายกำกับภาษาอังกฤษ */}
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '1.5px', marginTop: '4px', fontWeight: '600' }}>
                 {unit.label}
               </span>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-main)', marginTop: '2px' }}>
+              {/* ป้ายกำกับภาษาไทย */}
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-main)', marginTop: '1px', opacity: 0.8 }}>
                 {unit.labelTh}
               </span>
             </div>
           ))}
+        </motion.div>
+
+        {/* กลุ่มปุ่ม Add to Calendar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{ marginTop: '30px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}
+        >
+          {/* Apple/Outlook (ICS) */}
+          <a 
+            href="/event.ics"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              fontSize: '0.95rem',
+              backgroundColor: 'var(--primary)',
+              color: 'var(--white)'
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Apple / Outlook
+          </a>
+
+          {/* Google Calendar */}
+          <a 
+            href={(() => {
+              const d = new Date(config.countdown.targetDate);
+              const y = d.getFullYear();
+              const m = String(d.getMonth() + 1).padStart(2, '0');
+              const day = String(d.getDate()).padStart(2, '0');
+              
+              const nd = new Date(d);
+              nd.setDate(nd.getDate() + 1);
+              const ny = nd.getFullYear();
+              const nm = String(nd.getMonth() + 1).padStart(2, '0');
+              const nday = String(nd.getDate()).padStart(2, '0');
+              
+              const title = encodeURIComponent(config.siteTitle || 'Wedding');
+              const loc = encodeURIComponent(config.hero?.location || '');
+              return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${y}${m}${day}/${ny}${nm}${nday}&location=${loc}`;
+            })()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              fontSize: '0.95rem',
+              backgroundColor: '#fff',
+              color: 'var(--primary-dark)',
+              border: '1px solid var(--border-color)'
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Google Calendar
+          </a>
+        </motion.div>
+
+        {/* ==========================================
+            ส่วน Dress Code — ธีมสีเสื้อผ้า
+            แก้สีวงกลมได้ในรายการ { color: '#...' } ด้านล่าง
+            เพิ่มหรือลดจำนวนสีโดยเพิ่ม/ลบ { color: '#XXXXXX' } ในอาร์เรย์
+        ========================================== */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          style={{ marginTop: '60px' }}
+        >
+          {/* หัวข้อ Dress Code */}
+          <h2 className="section-title">
+            {config.dressCode?.title || 'Dress Code'}
+          </h2>
+          <p className="section-subtitle" style={{ marginBottom: '30px' }}>
+            {config.dressCode?.subtitle || 'โทนสีเสื้อผ้า'}
+          </p>
+
+          {/* วงกลมสี — ดึงจาก config.json */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '30px',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap'
+          }}>
+            {(config.dressCode?.colors || []).map((item, idx) => (
+              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                <div 
+                  style={{
+                    width: '68px',
+                    height: '68px',
+                    borderRadius: '50%',
+                    backgroundColor: item.color,
+                    boxShadow: '0 8px 20px rgba(196, 109, 130, 0.22), inset 0 2px 4px rgba(255,255,255,0.6)',
+                    border: '4px solid #ffffff',
+                    outline: '1px solid var(--border-color)',
+                    transition: 'var(--transition-smooth)'
+                  }} 
+                  className="color-circle"
+                />
+                <span style={{ fontSize: '0.9rem', color: 'var(--text-main)', fontWeight: 600, letterSpacing: '0.5px' }}>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
