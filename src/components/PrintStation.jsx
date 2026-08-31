@@ -213,7 +213,7 @@ const PrintStation = () => {
           @page { margin: 0; size: 6in 4in landscape; }
           body { background: #f4f0ec; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
-          .print-container { background: #f4f0ec !important; padding: 0 !important; align-items: center !important; justify-content: center !important; }
+          .print-container { background: #f4f0ec !important; padding: 0 !important; align-items: center !important; justify-content: center !important; min-height: 100vh !important; }
         }
         
         .print-page {
@@ -226,6 +226,7 @@ const PrintStation = () => {
           box-sizing: border-box;
           padding: 0.25in 0;
           margin: 0 auto;
+          overflow: hidden; /* Force lock size */
         }
         
         @media print {
@@ -237,6 +238,8 @@ const PrintStation = () => {
           justify-content: center;
           align-items: center;
           position: relative;
+          min-width: 0;
+          min-height: 0;
         }
         
         .sidebar-left h2 {
@@ -256,11 +259,16 @@ const PrintStation = () => {
           grid-template-rows: 2.2fr 1fr;
           gap: 0.1in;
           height: 100%;
+          min-width: 0;
+          min-height: 0;
         }
 
         .photo-wrapper {
           background-color: #e0dcd5;
           overflow: hidden;
+          position: relative;
+          min-width: 0;
+          min-height: 0;
         }
         
         .hero-photo {
@@ -268,6 +276,9 @@ const PrintStation = () => {
         }
 
         .photo-wrapper img {
+          position: absolute;
+          top: 0;
+          left: 0;
           width: 100%;
           height: 100%;
           object-fit: cover;
@@ -280,12 +291,14 @@ const PrintStation = () => {
           align-items: center;
           padding: 0 0.1in;
           text-align: center;
+          min-width: 0;
+          min-height: 0;
         }
         
         .sidebar-right h3 {
           margin: 0;
-          font-family: var(--font-cursive), 'Brush Script MT', cursive;
-          font-size: 1.4rem;
+          font-family: 'Great Vibes', 'Dancing Script', 'Brush Script MT', cursive;
+          font-size: 1.6rem;
           font-weight: normal;
           color: #222;
           line-height: 1.2;
