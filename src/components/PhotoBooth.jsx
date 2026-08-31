@@ -16,6 +16,7 @@ const PhotoBooth = () => {
   const [name, setName] = useState('');
   const [insertedRecord, setInsertedRecord] = useState(null);
   const [showQR, setShowQR] = useState(false);
+  const [selectedForPrint, setSelectedForPrint] = useState([]);
   
   // Camera state
   const videoRef = useRef(null);
@@ -31,6 +32,27 @@ const PhotoBooth = () => {
   const [audioPreviewUrl, setAudioPreviewUrl] = useState(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+
+  // Set default selected for print when entering success step
+  useEffect(() => {
+    if (step === 'success' && photos.length > 0) {
+      setSelectedForPrint(photos.slice(0, 4).map((_, i) => i));
+    }
+  }, [step, photos]);
+
+  const togglePrintSelection = (index) => {
+    if (selectedForPrint.includes(index)) {
+      setSelectedForPrint(prev => prev.filter(i => i !== index));
+      setShowQR(false); // hide QR if they change selection
+    } else {
+      if (selectedForPrint.length >= 4) {
+        alert("เลือกรูปสำหรับปริ้นท์ได้สูงสุด 4 รูปครับ");
+        return;
+      }
+      setSelectedForPrint(prev => [...prev, index].sort());
+      setShowQR(false);
+    }
+  };
 
   // ---- CAMERA LOGIC ----
   const startCamera = async () => {
@@ -450,19 +472,51 @@ const PhotoBooth = () => {
             
             {/* QR Code Section for Auto-Print */}
             {photos.length > 0 && insertedRecord && (
-              <div style={{ marginBottom: '30px' }}>
+              <div style={{ marginBottom: '30px', backgroundColor: '#fff', padding: '20px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+                <h4 style={{ margin: '0 0 10px 0', color: '#555' }}>📸 เลือกรูปที่ต้องการปริ้นท์ (สูงสุด 4 รูป)</h4>
+                <p style={{ margin: '0 0 15px 0', fontSize: '0.8rem', color: '#888' }}>กดที่รูปเพื่อเลือกรูปที่จะปรากฏใน Photo Booth Strip</p>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' }}>
+                  {photos.map((p, idx) => {
+                    const isSelected = selectedForPrint.includes(idx);
+                    return (
+                      <div 
+                        key={idx} 
+                        onClick={() => togglePrintSelection(idx)}
+                        style={{ 
+                          position: 'relative', 
+                          cursor: 'pointer', 
+                          border: isSelected ? '3px solid var(--primary)' : '3px solid transparent',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          opacity: isSelected ? 1 : 0.5,
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <img src={p.preview} alt={`thumb-${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                        {isSelected && (
+                          <div style={{ position: 'absolute', top: '5px', right: '5px', backgroundColor: 'var(--primary)', color: '#fff', borderRadius: '50%', padding: '2px' }}>
+                            <CheckCircle size={14} />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
                 {!showQR ? (
                   <button 
                     onClick={() => setShowQR(true)}
-                    style={{ padding: '12px 20px', backgroundColor: '#fff', border: '2px solid var(--primary)', color: 'var(--primary)', borderRadius: '12px', fontSize: '1rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}
+                    disabled={selectedForPrint.length === 0}
+                    style={{ padding: '12px 20px', backgroundColor: selectedForPrint.length === 0 ? '#ccc' : '#fff', border: `2px solid ${selectedForPrint.length === 0 ? '#ccc' : 'var(--primary)'}`, color: selectedForPrint.length === 0 ? '#fff' : 'var(--primary)', borderRadius: '12px', fontSize: '1rem', cursor: selectedForPrint.length === 0 ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease' }}
                   >
                     <QrCode size={18} /> สแกนเพื่อปริ้นท์รูป (Photo Booth)
                   </button>
                 ) : (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '15px', border: '2px dashed var(--primary)', display: 'inline-block' }}>
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ backgroundColor: '#fdfbf7', padding: '20px', borderRadius: '15px', border: '2px dashed var(--primary)', display: 'inline-block' }}>
                     <h4 style={{ margin: '0 0 10px 0', color: 'var(--primary)' }}>Scan me at the Print Station</h4>
                     <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`${window.location.origin}/print?id=${insertedRecord.id}`)}`} 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`${window.location.origin}/print?id=${insertedRecord.id}&s=${selectedForPrint.join(',')}`)}`} 
                       alt="Print QR Code" 
                       style={{ width: '150px', height: '150px' }}
                     />
@@ -500,6 +554,7 @@ const PhotoBooth = () => {
                 setAudioPreviewUrl(null); 
                 setInsertedRecord(null);
                 setShowQR(false);
+                setSelectedForPrint([]);
                 setStep('name'); 
               }}
               style={{ width: '100%', padding: '15px', backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: '12px', fontSize: '1.1rem', cursor: 'pointer' }}

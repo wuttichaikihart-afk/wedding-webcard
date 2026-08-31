@@ -193,7 +193,16 @@ const PrintStation = () => {
     return <div style={{ textAlign: 'center', padding: '50px', fontFamily: 'sans-serif' }}>กำลังดึงข้อมูลเพื่อเตรียมปริ้นท์...</div>;
   }
 
-  const photos = record.photo_url.split(',');
+  const allPhotos = record.photo_url.split(',');
+  const sParam = searchParams.get('s');
+  
+  let printPhotos = allPhotos;
+  if (sParam) {
+    const indices = sParam.split(',').map(Number).filter(n => !isNaN(n) && n >= 0 && n < allPhotos.length);
+    if (indices.length > 0) {
+      printPhotos = indices.map(i => allPhotos[i]);
+    }
+  }
 
   return (
     <div className="print-container" style={{ backgroundColor: '#fff', minHeight: '100vh', display: 'flex', justifyContent: 'center' }}>
@@ -231,7 +240,7 @@ const PrintStation = () => {
 
       <div className="photo-strip">
         {/* Render up to 4 photos for the strip */}
-        {photos.slice(0, 4).map((url, idx) => (
+        {printPhotos.slice(0, 4).map((url, idx) => (
           <div key={idx} style={{ width: '1.8in', height: '1.8in', backgroundColor: '#f0f0f0', overflow: 'hidden' }}>
             <img src={url} alt={`print-${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
