@@ -210,46 +210,36 @@ const PrintStation = () => {
       {/* Print Layout Styling */}
       <style>{`
         @media print {
-          @page { margin: 0; size: 4in 6in; }
+          @page { margin: 0; size: auto; }
           body { background: #fff; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
           .print-container { background: #fff !important; padding: 0 !important; align-items: flex-start !important; }
         }
         
         .print-page {
-          width: 4in;
-          height: 6in;
+          width: 2.2in;
+          height: auto;
+          min-height: 6.5in;
           background: #fff;
-          display: flex;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-          box-sizing: border-box;
-        }
-        
-        @media print {
-          .print-page { box-shadow: none; }
-        }
-
-        .photo-strip {
-          width: 2in;
-          height: 6in;
           display: flex;
           flex-direction: column;
           padding: 0.15in;
-          box-sizing: border-box;
           gap: 0.1in;
-          border-right: 1px dashed #ddd; /* Cut line indicator */
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          box-sizing: border-box;
+          margin: 0 auto;
         }
         
-        .photo-strip:last-child {
-          border-right: none;
+        @media print {
+          .print-page { box-shadow: none; margin: 0.2in auto; }
         }
 
         .photo-wrapper {
           width: 100%;
-          height: 1.15in; /* 4 photos + gaps fit nicely in 6in */
+          aspect-ratio: 4/3;
           background-color: #f0f0f0;
           overflow: hidden;
-          border-radius: 4px;
+          border-radius: 6px;
         }
         
         .photo-wrapper img {
@@ -260,21 +250,21 @@ const PrintStation = () => {
 
         .strip-footer {
           text-align: center;
-          margin-top: auto;
+          margin-top: 0.1in;
           padding-bottom: 0.05in;
         }
         
         .strip-footer h2 {
           margin: 0;
           font-family: var(--font-cursive), 'Brush Script MT', cursive;
-          font-size: 1.2rem;
+          font-size: 1.4rem;
           color: #000;
-          line-height: 1;
+          line-height: 1.2;
         }
         
         .strip-footer p {
           margin: 4px 0 0 0;
-          font-size: 0.5rem;
+          font-size: 0.55rem;
           color: #555;
           font-family: sans-serif;
           text-transform: uppercase;
@@ -293,23 +283,18 @@ const PrintStation = () => {
       </div>
 
       <div className="print-page">
-        {/* Render 2 identical strips side-by-side to fill the 4x6 paper */}
-        {[1, 2].map((stripIndex) => (
-          <div key={stripIndex} className="photo-strip">
-            {/* Render exactly 4 photos */}
-            {printPhotos.slice(0, 4).map((url, idx) => (
-              <div key={idx} className="photo-wrapper">
-                <img src={url} alt={`print-${idx}`} />
-              </div>
-            ))}
-            
-            {/* Footer Text / Logo */}
-            <div className="strip-footer">
-              <h2>T&T Wedding</h2>
-              <p>{new Date(record.created_at).toLocaleDateString('th-TH')} • {record.name}</p>
-            </div>
+        {/* Render exactly 4 photos as a single strip */}
+        {printPhotos.slice(0, 4).map((url, idx) => (
+          <div key={idx} className="photo-wrapper">
+            <img src={url} alt={`print-${idx}`} />
           </div>
         ))}
+        
+        {/* Footer Text / Logo */}
+        <div className="strip-footer">
+          <h2>T&T Wedding</h2>
+          <p>{new Date(record.created_at).toLocaleDateString('th-TH')} • {record.name}</p>
+        </div>
       </div>
     </div>
   );
