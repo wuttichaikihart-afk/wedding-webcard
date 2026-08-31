@@ -507,10 +507,10 @@ const PhotoBooth = () => {
                 {!showQR ? (
                   <button 
                     onClick={() => setShowQR(true)}
-                    disabled={selectedForPrint.length === 0}
-                    style={{ padding: '12px 20px', backgroundColor: selectedForPrint.length === 0 ? '#ccc' : '#fff', border: `2px solid ${selectedForPrint.length === 0 ? '#ccc' : 'var(--primary)'}`, color: selectedForPrint.length === 0 ? '#fff' : 'var(--primary)', borderRadius: '12px', fontSize: '1rem', cursor: selectedForPrint.length === 0 ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease' }}
+                    disabled={selectedForPrint.length !== Math.min(4, photos.length)}
+                    style={{ padding: '12px 20px', backgroundColor: selectedForPrint.length !== Math.min(4, photos.length) ? '#ccc' : '#fff', border: `2px solid ${selectedForPrint.length !== Math.min(4, photos.length) ? '#ccc' : 'var(--primary)'}`, color: selectedForPrint.length !== Math.min(4, photos.length) ? '#fff' : 'var(--primary)', borderRadius: '12px', fontSize: '1rem', cursor: selectedForPrint.length !== Math.min(4, photos.length) ? 'not-allowed' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease' }}
                   >
-                    <QrCode size={18} /> สแกนเพื่อปริ้นท์รูป (Photo Booth)
+                    <QrCode size={18} /> สแกนเพื่อปริ้นท์รูป (ต้องเลือก {Math.min(4, photos.length)} รูป)
                   </button>
                 ) : (
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ backgroundColor: '#fdfbf7', padding: '20px', borderRadius: '15px', border: '2px dashed var(--primary)', display: 'inline-block' }}>

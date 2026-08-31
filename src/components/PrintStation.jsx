@@ -205,54 +205,111 @@ const PrintStation = () => {
   }
 
   return (
-    <div className="print-container" style={{ backgroundColor: '#fff', minHeight: '100vh', display: 'flex', justifyContent: 'center' }}>
+    <div className="print-container" style={{ backgroundColor: '#ccc', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
       
-      {/* Print Strip Styling */}
+      {/* Print Layout Styling */}
       <style>{`
         @media print {
-          @page { margin: 0; size: auto; }
-          body { background: #fff; margin: 0; }
+          @page { margin: 0; size: 4in 6in; }
+          body { background: #fff; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .no-print { display: none !important; }
+          .print-container { background: #fff !important; padding: 0 !important; align-items: flex-start !important; }
         }
-        .photo-strip {
-          width: 2in; /* standard photo booth strip width */
+        
+        .print-page {
+          width: 4in;
+          height: 6in;
           background: #fff;
-          padding: 0.1in;
+          display: flex;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          box-sizing: border-box;
+        }
+        
+        @media print {
+          .print-page { box-shadow: none; }
+        }
+
+        .photo-strip {
+          width: 2in;
+          height: 6in;
           display: flex;
           flex-direction: column;
+          padding: 0.15in;
+          box-sizing: border-box;
           gap: 0.1in;
-          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          border-right: 1px dashed #ddd; /* Cut line indicator */
         }
-        @media print {
-          .photo-strip { box-shadow: none; }
+        
+        .photo-strip:last-child {
+          border-right: none;
+        }
+
+        .photo-wrapper {
+          width: 100%;
+          height: 1.15in; /* 4 photos + gaps fit nicely in 6in */
+          background-color: #f0f0f0;
+          overflow: hidden;
+          border-radius: 4px;
+        }
+        
+        .photo-wrapper img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .strip-footer {
+          text-align: center;
+          margin-top: auto;
+          padding-bottom: 0.05in;
+        }
+        
+        .strip-footer h2 {
+          margin: 0;
+          font-family: var(--font-cursive), 'Brush Script MT', cursive;
+          font-size: 1.2rem;
+          color: #000;
+          line-height: 1;
+        }
+        
+        .strip-footer p {
+          margin: 4px 0 0 0;
+          font-size: 0.5rem;
+          color: #555;
+          font-family: sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
       `}</style>
 
       {/* Action Button (Hidden on Print) */}
-      <div className="no-print" style={{ position: 'fixed', top: '20px', right: '20px', display: 'flex', gap: '10px' }}>
-        <button onClick={() => window.location.href='/print'} style={{ padding: '10px 20px', backgroundColor: '#e63946', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '5px' }}>
+      <div className="no-print" style={{ position: 'fixed', top: '20px', right: '20px', display: 'flex', gap: '10px', zIndex: 100 }}>
+        <button onClick={() => window.location.href='/print'} style={{ padding: '10px 20px', backgroundColor: '#e63946', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
           <X size={16} /> กลับไปหน้าสแกน
         </button>
-        <button onClick={() => window.print()} style={{ padding: '10px 20px', backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <button onClick={() => window.print()} style={{ padding: '10px 20px', backgroundColor: '#333', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
           <Printer size={16} /> สั่งปริ้นท์อีกครั้ง
         </button>
       </div>
 
-      <div className="photo-strip">
-        {/* Render up to 4 photos for the strip */}
-        {printPhotos.slice(0, 4).map((url, idx) => (
-          <div key={idx} style={{ width: '1.8in', height: '1.8in', backgroundColor: '#f0f0f0', overflow: 'hidden' }}>
-            <img src={url} alt={`print-${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div className="print-page">
+        {/* Render 2 identical strips side-by-side to fill the 4x6 paper */}
+        {[1, 2].map((stripIndex) => (
+          <div key={stripIndex} className="photo-strip">
+            {/* Render exactly 4 photos */}
+            {printPhotos.slice(0, 4).map((url, idx) => (
+              <div key={idx} className="photo-wrapper">
+                <img src={url} alt={`print-${idx}`} />
+              </div>
+            ))}
+            
+            {/* Footer Text / Logo */}
+            <div className="strip-footer">
+              <h2>T&T Wedding</h2>
+              <p>{new Date(record.created_at).toLocaleDateString('th-TH')} • {record.name}</p>
+            </div>
           </div>
         ))}
-        
-        {/* Footer Text / Logo */}
-        <div style={{ textAlign: 'center', marginTop: '0.1in', marginBottom: '0.1in' }}>
-          <h2 style={{ margin: 0, fontFamily: 'var(--font-cursive)', fontSize: '1.5rem', color: '#000' }}>T&T Wedding</h2>
-          <p style={{ margin: 0, fontSize: '0.6rem', color: '#555', fontFamily: 'sans-serif' }}>
-            {new Date(record.created_at).toLocaleDateString('th-TH')} • {record.name}
-          </p>
-        </div>
       </div>
     </div>
   );
