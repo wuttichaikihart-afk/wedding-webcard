@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { useSearchParams } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Printer, Camera, QrCode, X } from 'lucide-react';
+import { Printer, Camera, QrCode, X, Home, Image as ImageIcon } from 'lucide-react';
 
 const PrintStation = () => {
   const [searchParams] = useSearchParams();
@@ -148,7 +148,7 @@ const PrintStation = () => {
   if (!id) {
     // READY TO SCAN UI
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#fdfbf7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-body)', padding: '20px' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#fdfbf7', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-body)', padding: '20px' }}>
         <div style={{ width: '100%', maxWidth: '600px', backgroundColor: '#fff', borderRadius: '20px', padding: '40px', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', textAlign: 'center' }}>
           
           <Printer size={60} color="var(--primary)" style={{ marginBottom: '20px' }} />
@@ -179,6 +179,19 @@ const PrintStation = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Quick Navigation Links */}
+        <div style={{ marginTop: '40px', display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <button onClick={() => window.location.href = '/photobooth'} style={{ padding: '10px 20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '30px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <Camera size={16} /> หน้าถ่ายรูป
+          </button>
+          <button onClick={() => window.location.href = '/memories'} style={{ padding: '10px 20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '30px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <ImageIcon size={16} /> แกลลอรี่
+          </button>
+          <button onClick={() => window.location.href = '/'} style={{ padding: '10px 20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '30px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+            <Home size={16} /> หน้าการ์ดหลัก
+          </button>
         </div>
       </div>
     );
