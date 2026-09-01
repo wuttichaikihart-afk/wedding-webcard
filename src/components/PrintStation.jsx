@@ -189,7 +189,7 @@ const PrintStation = () => {
           <button onClick={() => window.location.href = '/memories'} style={{ padding: '10px 20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '30px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
             <ImageIcon size={16} /> แกลลอรี่
           </button>
-          <button onClick={() => window.location.href = '/'} style={{ padding: '10px 20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '30px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+          <button onClick={() => window.location.href = 'https://taiiandtoey191269.netlify.app/'} style={{ padding: '10px 20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '30px', color: '#555', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
             <Home size={16} /> หน้าการ์ดหลัก
           </button>
         </div>
