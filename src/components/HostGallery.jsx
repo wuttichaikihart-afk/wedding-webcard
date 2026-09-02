@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { Mic, Image as ImageIcon, Heart, Download, Loader } from 'lucide-react';
+import { Mic, Image as ImageIcon, Heart, Download, Loader, Printer } from 'lucide-react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 
@@ -165,23 +165,43 @@ const HostGallery = () => {
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eee', paddingBottom: '10px', marginBottom: '15px' }}>
                   <h3 style={{ margin: 0, color: 'var(--primary-dark)', fontSize: '1.2rem' }}>{memo.name}</h3>
-                  <button 
-                    onClick={() => downloadSingle(memo)}
-                    disabled={downloadingId === memo.id}
-                    title="ดาวน์โหลดของคนนี้"
-                    style={{ 
-                      background: 'none', 
-                      border: 'none', 
-                      color: downloadingId === memo.id ? '#ccc' : 'var(--primary)', 
-                      cursor: downloadingId === memo.id ? 'not-allowed' : 'pointer',
-                      padding: '5px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    {downloadingId === memo.id ? <Loader className="animate-spin" size={20} /> : <Download size={20} />}
-                  </button>
+                  <div style={{ display: 'flex', gap: '5px' }}>
+                    {memo.photo_url && (
+                      <button 
+                        onClick={() => window.open(`/print?id=${memo.id}`, '_blank')}
+                        title="ปริ้นท์รูปนี้"
+                        style={{ 
+                          background: 'none', 
+                          border: 'none', 
+                          color: 'var(--primary)', 
+                          cursor: 'pointer',
+                          padding: '5px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Printer size={20} />
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => downloadSingle(memo)}
+                      disabled={downloadingId === memo.id}
+                      title="ดาวน์โหลดของคนนี้"
+                      style={{ 
+                        background: 'none', 
+                        border: 'none', 
+                        color: downloadingId === memo.id ? '#ccc' : 'var(--primary)', 
+                        cursor: downloadingId === memo.id ? 'not-allowed' : 'pointer',
+                        padding: '5px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      {downloadingId === memo.id ? <Loader className="animate-spin" size={20} /> : <Download size={20} />}
+                    </button>
+                  </div>
                 </div>
                 
                 {/* Render Photos */}
