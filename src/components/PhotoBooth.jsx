@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { Camera, Mic, Square, Send, CheckCircle, ArrowLeft, Image as ImageIcon, Disc, Trash2, Download, QrCode, Printer } from 'lucide-react';
+import { Camera, Mic, Square, Send, CheckCircle, ArrowLeft, Image as ImageIcon, Disc, Trash2, Download, QrCode, Printer, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FILTERS = [
@@ -24,6 +24,7 @@ const PhotoBooth = () => {
   const [stream, setStream] = useState(null);
   const [photos, setPhotos] = useState([]); // array of blob objects
   const [activeFilter, setActiveFilter] = useState(FILTERS[0]);
+  const [facingMode, setFacingMode] = useState('user'); // 'user' or 'environment'
   const MAX_PHOTOS = 5;
 
   // Audio state
@@ -55,10 +56,14 @@ const PhotoBooth = () => {
   };
 
   // ---- CAMERA LOGIC ----
-  const startCamera = async () => {
+  const startCamera = async (mode = facingMode) => {
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: mode } });
       setStream(mediaStream);
+      setFacingMode(mode);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
@@ -66,6 +71,11 @@ const PhotoBooth = () => {
       console.error("Camera error:", err);
       alert("ไม่สามารถเข้าถึงกล้องได้ครับ");
     }
+  };
+
+  const switchCamera = () => {
+    const newMode = facingMode === 'user' ? 'environment' : 'user';
+    startCamera(newMode);
   };
 
   const stopCamera = () => {
@@ -90,9 +100,11 @@ const PhotoBooth = () => {
       // Apply CSS filter to canvas
       ctx.filter = activeFilter.value;
       
-      // Mirror the image if it's a front camera (usually it is)
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
+      // Mirror the image if it's a front camera
+      if (facingMode === 'user') {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+      }
       
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       
@@ -341,8 +353,14 @@ const PhotoBooth = () => {
                   autoPlay 
                   playsInline 
                   muted 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', filter: activeFilter.value, transform: 'scaleX(-1)' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', filter: activeFilter.value, transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
                 ></video>
+                <button 
+                  onClick={switchCamera}
+                  style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'rgba(255,255,255,0.7)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.2)' }}
+                >
+                  <RefreshCw size={20} color="#333" />
+                </button>
               </div>
               <div style={{ textAlign: 'center', marginTop: '15px', fontFamily: 'var(--font-cursive)', fontSize: '1.5rem', color: '#555' }}>T&T Wedding</div>
             </div>
