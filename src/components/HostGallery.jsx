@@ -51,8 +51,8 @@ const HostGallery = () => {
       if (memo.audio_url) {
         const response = await fetch(memo.audio_url);
         const blob = await response.blob();
-        // Determine extension based on type if possible, usually webm from MediaRecorder
-        folder.file(`audio.webm`, blob);
+        const ext = memo.audio_url.split('.').pop().split('?')[0] || 'mp3';
+        folder.file(`audio.${ext}`, blob);
       }
       
       const content = await zip.generateAsync({ type: 'blob' });
@@ -90,7 +90,8 @@ const HostGallery = () => {
           const response = await fetch(memo.audio_url).catch(() => null);
           if (response && response.ok) {
             const blob = await response.blob();
-            folder.file(`audio.webm`, blob);
+            const ext = memo.audio_url.split('.').pop().split('?')[0] || 'mp3';
+            folder.file(`audio.${ext}`, blob);
           }
         }
       }

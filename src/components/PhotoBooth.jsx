@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { Camera, Mic, Square, Send, CheckCircle, ArrowLeft, Image as ImageIcon, Disc, Trash2, Download, QrCode, Printer, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import lamejs from 'lamejs';
 
 const FILTERS = [
   { name: 'ปกติ (Normal)', value: 'none' },
@@ -179,6 +180,60 @@ const PhotoBooth = () => {
   };
 
   // ---- UPLOAD LOGIC ----
+  const convertToMp3 = async (webmBlob) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const arrayBuffer = await webmBlob.arrayBuffer();
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        
+        const channels = audioBuffer.numberOfChannels;
+        const sampleRate = audioBuffer.sampleRate;
+        const mp3encoder = new lamejs.Mp3Encoder(channels, sampleRate, 128);
+        const mp3Data = [];
+        
+        const sampleBlockSize = 1152;
+        const float32ToInt16 = (float32Array) => {
+          const int16Array = new Int16Array(float32Array.length);
+          for (let i = 0; i < float32Array.length; i++) {
+            let s = Math.max(-1, Math.min(1, float32Array[i]));
+            int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+          }
+          return int16Array;
+        };
+
+        if (channels === 1) {
+          const left = audioBuffer.getChannelData(0);
+          const leftInt16 = float32ToInt16(left);
+          for (let i = 0; i < leftInt16.length; i += sampleBlockSize) {
+            const sampleChunk = leftInt16.subarray(i, i + sampleBlockSize);
+            const mp3buf = mp3encoder.encodeBuffer(sampleChunk);
+            if (mp3buf.length > 0) mp3Data.push(mp3buf);
+          }
+        } else {
+          const left = audioBuffer.getChannelData(0);
+          const right = audioBuffer.getChannelData(1);
+          const leftInt16 = float32ToInt16(left);
+          const rightInt16 = float32ToInt16(right);
+          for (let i = 0; i < leftInt16.length; i += sampleBlockSize) {
+            const leftChunk = leftInt16.subarray(i, i + sampleBlockSize);
+            const rightChunk = rightInt16.subarray(i, i + sampleBlockSize);
+            const mp3buf = mp3encoder.encodeBuffer(leftChunk, rightChunk);
+            if (mp3buf.length > 0) mp3Data.push(mp3buf);
+          }
+        }
+        
+        const mp3buf = mp3encoder.flush();
+        if (mp3buf.length > 0) mp3Data.push(mp3buf);
+        
+        resolve(new Blob(mp3Data, { type: 'audio/mpeg' }));
+      } catch (e) {
+        console.error("MP3 conversion failed:", e);
+        reject(e);
+      }
+    });
+  };
+
   const handleSubmit = async () => {
     if (!name.trim()) return;
     if (photos.length === 0 && !audioBlob) {
@@ -209,11 +264,22 @@ const PhotoBooth = () => {
 
       // 2. Upload Audio
       if (audioBlob) {
-        const ext = audioBlob.type.includes('mp4') ? 'mp4' : 'webm';
+        let finalAudioBlob = audioBlob;
+        let ext = 'webm';
+        
+        try {
+          // Convert to MP3
+          finalAudioBlob = await convertToMp3(audioBlob);
+          ext = 'mp3';
+        } catch (convertErr) {
+          console.warn("Falling back to native audio format", convertErr);
+          ext = audioBlob.type.includes('mp4') ? 'mp4' : 'webm';
+        }
+
         const audioName = `audio_${timestamp}.${ext}`;
         const { error: audioError } = await supabase.storage
           .from('guest_media')
-          .upload(audioName, audioBlob);
+          .upload(audioName, finalAudioBlob);
         
         if (audioError) throw audioError;
         
