@@ -24,7 +24,7 @@ const PhotoBooth = () => {
   const [stream, setStream] = useState(null);
   const [photos, setPhotos] = useState([]); // array of blob objects
   const [activeFilter, setActiveFilter] = useState(FILTERS[0]);
-  const MAX_PHOTOS = 10;
+  const MAX_PHOTOS = 5;
 
   // Audio state
   const [isRecording, setIsRecording] = useState(false);
@@ -281,7 +281,7 @@ const PhotoBooth = () => {
                 <div style={{ backgroundColor: 'var(--primary-light)', padding: '15px', borderRadius: '50%', color: 'var(--primary)' }}><Camera size={30} /></div>
                 <div style={{ textAlign: 'left', flex: 1 }}>
                   <h3 style={{ margin: '0 0 5px 0' }}>ถ่ายรูปโพลารอยด์</h3>
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#666' }}>{photos.length > 0 ? `ถ่ายแล้ว ${photos.length} รูป (กดเพื่อถ่ายเพิ่ม)` : 'ถ่ายได้สูงสุด 10 รูป พร้อมฟิลเตอร์'}</p>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#666' }}>{photos.length > 0 ? `ถ่ายแล้ว ${photos.length} รูป (กดเพื่อถ่ายเพิ่ม)` : 'ถ่ายได้สูงสุด 5 รูป พร้อมฟิลเตอร์'}</p>
                 </div>
                 {photos.length > 0 && <CheckCircle color="var(--primary)" size={24} />}
               </button>
