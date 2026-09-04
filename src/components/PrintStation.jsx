@@ -348,7 +348,7 @@ const PrintStation = () => {
       <div className="print-page">
         {/* Left Sidebar (Couple Names) */}
         <div className="sidebar-left">
-          <h2>TOEY + TAI</h2>
+          <h2>wedding Taii+Toey 19.12.69</h2>
         </div>
 
         {/* Center Photo Grid (1 Large, 3 Small) */}
