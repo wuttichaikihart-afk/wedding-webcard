@@ -5,7 +5,7 @@
 // ทุก section ที่เห็นบนหน้าเว็บถูกจัดลำดับไว้ที่นี่
 // ถ้าต้องการเรียงลำดับส่วนต่างๆ ใหม่ หรือซ่อน/เพิ่ม section ให้แก้ที่ไฟล์นี้
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HeroSection from './components/HeroSection';    // ส่วนหน้าปก (ภาพใหญ่บนสุด)
 import Countdown from './components/Countdown';        // นับถอยหลังวันงาน + Dress Code
