@@ -78,7 +78,7 @@ const LocationMap = () => {
                 เปิดนำทางสถานที่จัดงาน
               </a>
               <a 
-                href="https://maps.app.goo.gl/CdjJ9b8XqNmtYBpB8"  // ลิงก์ฉลองมงคลสมรส
+                href="https://maps.app.goo.gl/6jFfwkoo9Uj5eLaF7"  // ลิงก์ฉลองมงคลสมรส
                 target="_blank" 
                 rel="noreferrer"
                 className="btn btn-secondary"
