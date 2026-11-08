@@ -27,9 +27,21 @@ import configData from './data/config.json';               // ข้อมูล
 // คอมโพเนนต์หน้าเว็บหลัก
 const MainSite = () => {
   const [config, setConfig] = useState(configData);
+  const [showPhotoBoothBtn, setShowPhotoBoothBtn] = useState(false);
 
   useEffect(() => {
     document.title = config.siteTitle || "Wedding";
+  }, []);
+
+  // ตรวจสอบวันงาน (19 ธันวาคม 2569 / 2026-12-19) เพื่อแสดงปุ่มทางลัดโฟโต้บูธ
+  useEffect(() => {
+    const weddingDay = new Date('2026-12-19T00:00:00+07:00');
+    const now = new Date();
+    const urlParams = new URLSearchParams(window.location.search);
+    const forceShow = urlParams.get('photobooth') === 'true';
+    if (now >= weddingDay || forceShow) {
+      setShowPhotoBoothBtn(true);
+    }
   }, []);
 
   // ดึงค่าสีและฟอนต์จาก config มาตั้งเป็น CSS Variables ให้ทั่วทั้งเว็บ (ระดับ Global)
@@ -62,33 +74,35 @@ const MainSite = () => {
       <GiftRegistry />  
       <MusicPlayer />   
       
-      {/* ปุ่มทางลัดเปิดโฟโต้บูธถ่ายรูป (ธีม Blush Pink งานแต่ง) */}
-      <a 
-        href="/photobooth"
-        style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '20px',
-          background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)',
-          color: '#ffffff',
-          padding: '11px 20px',
-          borderRadius: '30px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          boxShadow: '0 8px 25px rgba(196, 109, 130, 0.35)',
-          zIndex: 999,
-          textDecoration: 'none',
-          fontWeight: '600',
-          fontSize: '0.92rem',
-          border: '2px solid #ffffff',
-          transition: 'transform 0.2s',
-          whiteSpace: 'nowrap'
-        }}
-        title="เปิดกล้องโฟโต้บูธถ่ายรูป"
-      >
-        <span style={{ fontSize: '1.1rem' }}>📸</span> โฟโต้บูธถ่ายรูป
-      </a>   
+      {/* ปุ่มทางลัดเปิดโฟโต้บูธถ่ายรูป (จะแสดงอัตโนมัติในวันงาน 19/12/2569 เป็นต้นไป) */}
+      {showPhotoBoothBtn && (
+        <a 
+          href="/photobooth"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '20px',
+            background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)',
+            color: '#ffffff',
+            padding: '11px 20px',
+            borderRadius: '30px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: '0 8px 25px rgba(196, 109, 130, 0.35)',
+            zIndex: 999,
+            textDecoration: 'none',
+            fontWeight: '600',
+            fontSize: '0.92rem',
+            border: '2px solid #ffffff',
+            transition: 'transform 0.2s',
+            whiteSpace: 'nowrap'
+          }}
+          title="เปิดกล้องโฟโต้บูธถ่ายรูป"
+        >
+          <span style={{ fontSize: '1.1rem' }}>📸</span> โฟโต้บูธถ่ายรูป
+        </a>
+      )}   
       
       <footer style={{
         textAlign: 'center',
