@@ -95,7 +95,7 @@ const PhotoBooth = () => {
   };
 
   const handleLineShare = () => {
-    const text = `ภาพความทรงจำงานแต่ง Taii & Toey 💍✨ #TAITOEYWEDDING\nดูรูปภาพและคำอวยพรได้ที่: ${window.location.origin}/memories`;
+    const text = `ภาพความทรงจำงานแต่ง Taii & Toey 💍✨ #TAIITOEYWEDDING\nดูรูปภาพและคำอวยพรได้ที่: ${window.location.origin}/memories`;
     const url = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };
@@ -342,7 +342,7 @@ const PhotoBooth = () => {
         const file = new File([photoItem.blob], `Taii_Toey_Wedding_${index + 1}.jpg`, { type: 'image/jpeg' });
         await navigator.share({
           title: 'Taii & Toey Wedding',
-          text: 'ภาพความทรงจำงานแต่ง Taii & Toey #TAITOEYWEDDING',
+          text: 'ภาพความทรงจำงานแต่ง Taii & Toey #TAIITOEYWEDDING',
           files: [file]
         });
       } catch (err) {
@@ -1182,7 +1182,7 @@ const PhotoBooth = () => {
                 ✨ แชร์ภาพความประทับใจลงโซเชียล ✨
               </h3>
               <p style={{ margin: '0 0 16px 0', fontSize: '0.85rem', color: '#888' }}>
-                ติดแฮชแท็ก <strong>#TAITOEYWEDDING</strong> เพื่อร่วมยินดีกับบ่าวสาว
+                ติดแฮชแท็ก <strong>#TAIITOEYWEDDING</strong> เพื่อร่วมยินดีกับบ่าวสาว
               </p>
 
               {/* Social Buttons Grid */}
