@@ -54,15 +54,15 @@ const MusicPlayer = () => {
         onClick={togglePlay}
         style={{
           position: 'fixed',
-          bottom: '30px',
-          right: '30px',
-          width: '50px',
-          height: '50px',
+          bottom: '24px',
+          left: '20px',
+          width: '46px',
+          height: '46px',
           borderRadius: '50%',
-          backgroundColor: 'var(--primary)',
+          background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)',
           color: 'white',
-          border: 'none',
-          boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+          border: '2px solid #ffffff',
+          boxShadow: '0 6px 20px rgba(196, 109, 130, 0.35)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -70,13 +70,14 @@ const MusicPlayer = () => {
           zIndex: 9999,
           overflow: 'hidden'
         }}
+        title={isPlaying ? "หยุดเพลง" : "เล่นเพลง"}
       >
         <motion.div
           animate={{ rotate: isPlaying ? 360 : 0 }}
           transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
-          {isPlaying ? <Pause size={24} /> : <Disc3 size={24} />}
+          {isPlaying ? <Pause size={22} /> : <Disc3 size={22} />}
         </motion.div>
       </motion.button>
     </>
