@@ -640,7 +640,7 @@ const PhotoBooth = () => {
               type="text" 
               value={name} 
               onChange={e => setName(e.target.value)} 
-              placeholder="พิมพ์ชื่อของคุณ (เช่น เพื่อนต่าย / พี่เต้ย)..." 
+              placeholder="พิมพ์ชื่อของคุณ..." 
               style={{ width: '100%', padding: '16px', borderRadius: '14px', border: '2px solid #eee', fontSize: '1.1rem', textAlign: 'center', marginBottom: '20px', outline: 'none', boxSizing: 'border-box' }}
               onKeyDown={(e) => e.key === 'Enter' && name.trim() && setStep('select')}
             />
