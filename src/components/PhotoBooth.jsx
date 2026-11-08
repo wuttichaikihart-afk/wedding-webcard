@@ -11,12 +11,14 @@ import {
   Disc, 
   Trash2, 
   Download, 
-  QrCode, 
-  Printer, 
   RefreshCw,
   Share2,
   Timer,
-  Sparkles
+  Sparkles,
+  Copy,
+  Check,
+  ExternalLink,
+  MessageCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import lamejs from 'lamejs';
@@ -62,8 +64,7 @@ const PhotoBooth = () => {
   const [step, setStep] = useState('name'); // 'name', 'select', 'photo', 'audio', 'uploading', 'success'
   const [name, setName] = useState('');
   const [insertedRecord, setInsertedRecord] = useState(null);
-  const [showQR, setShowQR] = useState(false);
-  const [selectedForPrint, setSelectedForPrint] = useState([]);
+  const [copiedLink, setCopiedLink] = useState(false);
   
   // Camera state
   const videoRef = useRef(null);
@@ -85,25 +86,25 @@ const PhotoBooth = () => {
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
 
-  // Set default selected for print when entering success step
-  useEffect(() => {
-    if (step === 'success' && photos.length > 0) {
-      setSelectedForPrint(photos.slice(0, 4).map((_, i) => i));
-    }
-  }, [step, photos]);
+  // Social Share Helpers
+  const handleCopyLink = () => {
+    const shareUrl = `${window.location.origin}/memories`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    });
+  };
 
-  const togglePrintSelection = (index) => {
-    if (selectedForPrint.includes(index)) {
-      setSelectedForPrint(prev => prev.filter(i => i !== index));
-      setShowQR(false);
-    } else {
-      if (selectedForPrint.length >= 4) {
-        alert("เลือกรูปสำหรับปริ้นท์ได้สูงสุด 4 รูปครับ");
-        return;
-      }
-      setSelectedForPrint(prev => [...prev, index].sort());
-      setShowQR(false);
-    }
+  const handleLineShare = () => {
+    const text = `ภาพความทรงจำงานแต่ง Taii & Toey 💍✨ #TAITOEYWEDDING\nดูรูปภาพและคำอวยพรได้ที่: ${window.location.origin}/memories`;
+    const url = `https://line.me/R/msg/text/?${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  };
+
+  const handleFacebookShare = () => {
+    const shareUrl = `${window.location.origin}/memories`;
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+    window.open(url, '_blank', 'width=600,height=500');
   };
 
   // ---- CAMERA LOGIC ----
@@ -789,7 +790,7 @@ const PhotoBooth = () => {
                   boxShadow: '0 6px 20px rgba(122,89,72,0.3)' 
                 }}
               >
-                <Send size={20} /> ส่งข้อมูลให้บ่าวสาว &amp; รับ QR ปริ้นท์รูป
+                <Send size={20} /> ส่งความทรงจำให้บ่าวสาว &amp; บันทึกรูปภาพ
               </button>
             )}
           </motion.div>
@@ -1133,18 +1134,18 @@ const PhotoBooth = () => {
           </div>
         )}
 
-        {/* STEP 6: SUCCESS & DOWNLOAD/SHARE/PRINT */}
+        {/* STEP 6: SUCCESS & SOCIAL SHARE */}
         {step === 'success' && (
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ textAlign: 'center', padding: '10px 0' }}>
             <CheckCircle size={70} color="#c5a57a" style={{ margin: '0 auto 16px' }} />
-            <h2 style={{ color: '#7a5948', margin: '0 0 6px 0' }}>ส่งเรียบร้อยแล้ว!</h2>
-            <p style={{ color: '#666', marginBottom: '24px' }}>ขอบคุณ <strong>{name}</strong> ที่มาร่วมบันทึกความทรงจำกับเราครับ</p>
+            <h2 style={{ color: '#7a5948', margin: '0 0 6px 0', fontSize: '1.6rem' }}>ส่งความทรงจำเรียบร้อยแล้ว!</h2>
+            <p style={{ color: '#666', marginBottom: '24px', fontSize: '0.95rem' }}>ขอบคุณ <strong>{name}</strong> ที่มาร่วมแชร์โมเมนต์พิเศษกับเราครับ 💖</p>
             
             {/* DOWNLOAD & SHARE CARDS */}
             {photos.length > 0 && (
-              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #c5a57a', padding: '20px', borderRadius: '18px', marginBottom: '24px', textAlign: 'left' }}>
-                <h4 style={{ margin: '0 0 12px 0', color: '#7a5948', textAlign: 'center', fontSize: '1.05rem' }}>
-                  💾 บันทึกรูปภาพความทรงจำพร้อมกรอบ
+              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #c5a57a', padding: '20px', borderRadius: '18px', marginBottom: '22px', textAlign: 'left' }}>
+                <h4 style={{ margin: '0 0 14px 0', color: '#7a5948', textAlign: 'center', fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <span>📸</span> รูปถ่ายของคุณพร้อมกรอบงานแต่ง ({photos.length} รูป)
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
                   {photos.map((p, idx) => (
@@ -1158,14 +1159,14 @@ const PhotoBooth = () => {
                         <a 
                           href={p.preview} 
                           download={`Taii_Toey_Wedding_${idx + 1}.jpg`}
-                          style={{ flex: 1, padding: '9px 6px', backgroundColor: '#7a5948', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontSize: '0.82rem', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
+                          style={{ flex: 1, padding: '10px 6px', backgroundColor: '#7a5948', color: '#fff', textDecoration: 'none', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
                         >
                           <Download size={15} /> บันทึกรูป
                         </a>
                         <button 
                           onClick={() => handleSharePhoto(p, idx)}
-                          style={{ padding: '9px 10px', backgroundColor: '#c5a57a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          title="แชร์ลง Story / LINE"
+                          style={{ padding: '10px 12px', backgroundColor: '#c5a57a', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          title="แชร์รูปนี้"
                         >
                           <Share2 size={16} />
                         </button>
@@ -1176,62 +1177,140 @@ const PhotoBooth = () => {
               </div>
             )}
 
-            {/* QR CODE FOR PRINT STATION */}
-            {photos.length > 0 && insertedRecord && (
-              <div style={{ marginBottom: '24px', backgroundColor: '#fff', padding: '20px', borderRadius: '16px', border: '1px solid #eee', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-                <h4 style={{ margin: '0 0 8px 0', color: '#333' }}>🖨️ ปริ้นท์รูปที่เครื่อง Print Station</h4>
-                <p style={{ margin: '0 0 14px 0', fontSize: '0.85rem', color: '#888' }}>เลือกรูปที่ต้องการนำไปปริ้นท์ (สูงสุด 4 รูป)</p>
+            {/* SOCIAL MEDIA SHARE HUB */}
+            <div style={{ backgroundColor: '#ffffff', padding: '22px 18px', borderRadius: '18px', border: '1.5px solid #eed9c4', boxShadow: '0 8px 25px rgba(122,89,72,0.08)', marginBottom: '22px', textAlign: 'center' }}>
+              <h3 style={{ margin: '0 0 6px 0', color: '#7a5948', fontSize: '1.15rem' }}>
+                ✨ แชร์ภาพความประทับใจลงโซเชียล ✨
+              </h3>
+              <p style={{ margin: '0 0 16px 0', fontSize: '0.85rem', color: '#888' }}>
+                ติดแฮชแท็ก <strong>#TAITOEYWEDDING</strong> เพื่อร่วมยินดีกับบ่าวสาว
+              </p>
+
+              {/* Social Buttons Grid */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px' }}>
-                  {photos.map((p, idx) => {
-                    const isSelected = selectedForPrint.includes(idx);
-                    return (
-                      <div 
-                        key={idx} 
-                        onClick={() => togglePrintSelection(idx)}
-                        style={{ 
-                          position: 'relative', 
-                          cursor: 'pointer', 
-                          border: isSelected ? '3px solid #c5a57a' : '3px solid transparent',
-                          borderRadius: '8px',
-                          overflow: 'hidden',
-                          opacity: isSelected ? 1 : 0.5,
-                          aspectRatio: '9/16'
-                        }}
-                      >
-                        <img src={p.preview} alt={`thumb-${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        {isSelected && (
-                          <div style={{ position: 'absolute', top: '4px', right: '4px', backgroundColor: '#c5a57a', color: '#fff', borderRadius: '50%', padding: '2px' }}>
-                            <CheckCircle size={14} />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                {/* 1. Native Mobile Share (Instagram / Stories / iOS Share Sheet) */}
+                {photos.length > 0 && (
+                  <button
+                    onClick={() => handleSharePhoto(photos[0], 0)}
+                    style={{
+                      width: '100%',
+                      padding: '14px',
+                      borderRadius: '12px',
+                      border: 'none',
+                      background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+                      color: '#ffffff',
+                      fontWeight: '700',
+                      fontSize: '0.98rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '10px',
+                      boxShadow: '0 4px 15px rgba(220,39,67,0.25)'
+                    }}
+                  >
+                    <Share2 size={18} /> แชร์ลง Instagram Story / โซเชียล
+                  </button>
+                )}
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                  {/* 2. LINE Share */}
+                  <button
+                    onClick={handleLineShare}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '12px',
+                      border: 'none',
+                      backgroundColor: '#06c755',
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '0.9rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      boxShadow: '0 4px 12px rgba(6,199,85,0.2)'
+                    }}
+                  >
+                    <MessageCircle size={18} /> ส่งต่อทาง LINE
+                  </button>
+
+                  {/* 3. Facebook Share */}
+                  <button
+                    onClick={handleFacebookShare}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '12px',
+                      border: 'none',
+                      backgroundColor: '#1877f2',
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '0.9rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      boxShadow: '0 4px 12px rgba(24,119,242,0.2)'
+                    }}
+                  >
+                    <Share2 size={18} /> แชร์ลง Facebook
+                  </button>
                 </div>
 
-                {!showQR ? (
-                  <button 
-                    onClick={() => setShowQR(true)}
-                    disabled={selectedForPrint.length === 0}
-                    style={{ padding: '12px 20px', backgroundColor: '#7a5948', color: '#fff', border: 'none', borderRadius: '12px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-                  >
-                    <QrCode size={18} /> แสดง QR Code สำหรับสแกนปริ้นท์
-                  </button>
-                ) : (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ backgroundColor: '#fffaf3', padding: '16px', borderRadius: '14px', border: '2px dashed #c5a57a', display: 'inline-block' }}>
-                    <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`${window.location.origin}/print?id=${insertedRecord.id}&s=${selectedForPrint.join(',')}`)}`} 
-                      alt="Print QR Code" 
-                      style={{ width: '160px', height: '160px', display: 'block', margin: '0 auto 8px' }}
-                    />
-                    <p style={{ margin: 0, fontSize: '0.85rem', color: '#7a5948', fontWeight: '600' }}>
-                      นำ QR Code นี้ไปสแกนที่โต๊ะ Print Station
-                    </p>
-                  </motion.div>
-                )}
+                {/* 4. Copy Link Button */}
+                <button
+                  onClick={handleCopyLink}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #d4c3b3',
+                    backgroundColor: '#fafafa',
+                    color: '#666',
+                    fontWeight: '600',
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  {copiedLink ? (
+                    <>
+                      <Check size={16} color="#06c755" />
+                      <span style={{ color: '#06c755' }}>คัดลอกลิงก์แกลเลอรีแล้ว!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={16} />
+                      <span>คัดลอกลิงก์ดูรูปทั้งหมด</span>
+                    </>
+                  )}
+                </button>
               </div>
-            )}
+
+              {/* View Live Gallery Shortcut */}
+              <a
+                href="/memories"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: '#7a5948',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  marginTop: '16px',
+                  textDecoration: 'none'
+                }}
+              >
+                <span>🖼️ ดูรูปภาพและความทรงจำทั้งหมดในงาน (Live Gallery)</span>
+                <ExternalLink size={14} />
+              </a>
+            </div>
 
             <button 
               onClick={() => { 
@@ -1240,13 +1319,11 @@ const PhotoBooth = () => {
                 setAudioBlob(null); 
                 setAudioPreviewUrl(null); 
                 setInsertedRecord(null);
-                setShowQR(false);
-                setSelectedForPrint([]);
                 setStep('name'); 
               }}
-              style={{ width: '100%', padding: '15px', backgroundColor: '#eee', color: '#444', border: 'none', borderRadius: '12px', fontSize: '1rem', cursor: 'pointer', fontWeight: '600' }}
+              style={{ width: '100%', padding: '15px', backgroundColor: '#f0ece6', color: '#555', border: 'none', borderRadius: '12px', fontSize: '1rem', cursor: 'pointer', fontWeight: '600' }}
             >
-              ถ่ายรูปใหม่อีกครั้ง
+              ถ่ายรูปใหม่อีกครั้ง 📸
             </button>
           </motion.div>
         )}
