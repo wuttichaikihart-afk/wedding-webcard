@@ -82,12 +82,11 @@ const RSVPForm = () => {
             <h2 className="section-title" style={{ margin: 0 }}>R.S.V.P</h2> 
             <span style={{ fontSize: '1.8rem', animation: 'pulse 2s infinite' }}>💌</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '35px' }}>
             <span style={{ height: '1px', width: '40px', backgroundColor: 'var(--primary)', opacity: 0.5 }}></span>
             <span style={{ color: 'var(--primary)', fontSize: '0.8rem' }}>✧</span>
             <span style={{ height: '1px', width: '40px', backgroundColor: 'var(--primary)', opacity: 0.5 }}></span>
           </div>
-          <p className="section-subtitle">กรุณาตอบรับการเข้าร่วมงานภายในวันที่ 1 พฤศจิกายน 2026</p>
         </motion.div>
 
         <motion.div
