@@ -1142,11 +1142,21 @@ const PhotoBooth = () => {
             
             {/* DOWNLOAD & SHARE CARDS */}
             {photos.length > 0 && (
-              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #c5a57a', padding: '20px', borderRadius: '18px', marginBottom: '22px', textAlign: 'left' }}>
-                <h4 style={{ margin: '0 0 14px 0', color: '#7a5948', textAlign: 'center', fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #c5a57a', padding: '20px', borderRadius: '18px', marginBottom: '22px', textAlign: 'center' }}>
+                <h4 style={{ margin: '0 0 4px 0', color: '#7a5948', fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                   <span>📸</span> รูปถ่ายของคุณพร้อมกรอบงานแต่ง ({photos.length} รูป)
                 </h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
+                <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: '#888' }}>
+                  ติดแฮชแท็ก <strong>#TAIITOEYWEDDING</strong> เพื่อร่วมยินดีกับบ่าวสาว ✨
+                </p>
+
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: photos.length === 1 ? '1fr' : 'repeat(2, 1fr)', 
+                  gap: '14px',
+                  maxWidth: photos.length === 1 ? '270px' : '100%',
+                  margin: '0 auto'
+                }}>
                   {photos.map((p, idx) => (
                     <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <img 
@@ -1154,20 +1164,102 @@ const PhotoBooth = () => {
                         alt={`dl-${idx}`} 
                         style={{ width: '100%', aspectRatio: '9/16', objectFit: 'cover', borderRadius: '10px', border: '2px solid #fff', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} 
                       />
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
                         <a 
                           href={p.preview} 
                           download={`Taii_Toey_Wedding_${idx + 1}.jpg`}
-                          style={{ flex: 1, padding: '10px 6px', backgroundColor: '#7a5948', color: '#fff', textDecoration: 'none', borderRadius: '10px', fontSize: '0.82rem', fontWeight: '600', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}
+                          style={{ 
+                            flex: 1, 
+                            minWidth: 0,
+                            padding: '8px 6px', 
+                            backgroundColor: '#7a5948', 
+                            color: '#fff', 
+                            textDecoration: 'none', 
+                            borderRadius: '8px', 
+                            fontSize: '0.8rem', 
+                            fontWeight: '600', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '4px',
+                            whiteSpace: 'nowrap',
+                            boxShadow: '0 2px 6px rgba(122,89,72,0.2)'
+                          }}
+                          title="บันทึกรูปภาพ"
                         >
-                          <Download size={15} /> บันทึกรูป
+                          <Download size={14} />
+                          <span>บันทึก</span>
                         </a>
+
+                        {/* Icon แชร์รูป / IG Story */}
                         <button 
                           onClick={() => handleSharePhoto(p, idx)}
-                          style={{ padding: '10px 12px', backgroundColor: '#c5a57a', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          title="แชร์รูปนี้"
+                          style={{ 
+                            width: '32px', 
+                            height: '32px', 
+                            padding: 0, 
+                            background: 'linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%)', 
+                            color: '#fff', 
+                            border: 'none', 
+                            borderRadius: '8px', 
+                            cursor: 'pointer', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            boxShadow: '0 2px 6px rgba(220,39,67,0.2)'
+                          }}
+                          title="แชร์ลง Instagram Story / โซเชียล"
                         >
-                          <Share2 size={16} />
+                          <Share2 size={15} />
+                        </button>
+
+                        {/* Icon LINE */}
+                        <button 
+                          onClick={handleLineShare}
+                          style={{ 
+                            width: '32px', 
+                            height: '32px', 
+                            padding: 0, 
+                            backgroundColor: '#06c755', 
+                            color: '#fff', 
+                            border: 'none', 
+                            borderRadius: '8px', 
+                            cursor: 'pointer', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            boxShadow: '0 2px 6px rgba(6,199,85,0.2)'
+                          }}
+                          title="ส่งต่อทาง LINE"
+                        >
+                          <MessageCircle size={15} />
+                        </button>
+
+                        {/* Icon Facebook */}
+                        <button 
+                          onClick={handleFacebookShare}
+                          style={{ 
+                            width: '32px', 
+                            height: '32px', 
+                            padding: 0, 
+                            backgroundColor: '#1877f2', 
+                            color: '#fff', 
+                            border: 'none', 
+                            borderRadius: '8px', 
+                            cursor: 'pointer', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            boxShadow: '0 2px 6px rgba(24,119,242,0.2)'
+                          }}
+                          title="แชร์ลง Facebook"
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                          </svg>
                         </button>
                       </div>
                     </div>
@@ -1175,123 +1267,6 @@ const PhotoBooth = () => {
                 </div>
               </div>
             )}
-
-            {/* SOCIAL MEDIA SHARE HUB */}
-            <div style={{ backgroundColor: '#ffffff', padding: '22px 18px', borderRadius: '18px', border: '1.5px solid #eed9c4', boxShadow: '0 8px 25px rgba(122,89,72,0.08)', marginBottom: '22px', textAlign: 'center' }}>
-              <h3 style={{ margin: '0 0 6px 0', color: '#7a5948', fontSize: '1.15rem' }}>
-                ✨ แชร์ภาพความประทับใจลงโซเชียล ✨
-              </h3>
-              <p style={{ margin: '0 0 16px 0', fontSize: '0.85rem', color: '#888' }}>
-                ติดแฮชแท็ก <strong>#TAIITOEYWEDDING</strong> เพื่อร่วมยินดีกับบ่าวสาว
-              </p>
-
-              {/* Social Buttons Grid */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                
-                {/* 1. Native Mobile Share (Instagram / Stories / iOS Share Sheet) */}
-                {photos.length > 0 && (
-                  <button
-                    onClick={() => handleSharePhoto(photos[0], 0)}
-                    style={{
-                      width: '100%',
-                      padding: '14px',
-                      borderRadius: '12px',
-                      border: 'none',
-                      background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
-                      color: '#ffffff',
-                      fontWeight: '700',
-                      fontSize: '0.98rem',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '10px',
-                      boxShadow: '0 4px 15px rgba(220,39,67,0.25)'
-                    }}
-                  >
-                    <Share2 size={18} /> แชร์ลง Instagram Story / โซเชียล
-                  </button>
-                )}
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-                  {/* 2. LINE Share */}
-                  <button
-                    onClick={handleLineShare}
-                    style={{
-                      padding: '12px',
-                      borderRadius: '12px',
-                      border: 'none',
-                      backgroundColor: '#06c755',
-                      color: '#ffffff',
-                      fontWeight: '600',
-                      fontSize: '0.9rem',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      boxShadow: '0 4px 12px rgba(6,199,85,0.2)'
-                    }}
-                  >
-                    <MessageCircle size={18} /> ส่งต่อทาง LINE
-                  </button>
-
-                  {/* 3. Facebook Share */}
-                  <button
-                    onClick={handleFacebookShare}
-                    style={{
-                      padding: '12px',
-                      borderRadius: '12px',
-                      border: 'none',
-                      backgroundColor: '#1877f2',
-                      color: '#ffffff',
-                      fontWeight: '600',
-                      fontSize: '0.9rem',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      boxShadow: '0 4px 12px rgba(24,119,242,0.2)'
-                    }}
-                  >
-                    <Share2 size={18} /> แชร์ลง Facebook
-                  </button>
-                </div>
-
-                {/* 4. Copy Link Button */}
-                <button
-                  onClick={handleCopyLink}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    borderRadius: '12px',
-                    border: '1.5px solid #d4c3b3',
-                    backgroundColor: '#fafafa',
-                    color: '#666',
-                    fontWeight: '600',
-                    fontSize: '0.88rem',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  {copiedLink ? (
-                    <>
-                      <Check size={16} color="#06c755" />
-                      <span style={{ color: '#06c755' }}>คัดลอกลิงก์แกลเลอรีแล้ว!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={16} />
-                      <span>คัดลอกลิงก์ดูรูปทั้งหมด</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
 
             <button 
               onClick={() => { 
