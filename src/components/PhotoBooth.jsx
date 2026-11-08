@@ -17,7 +17,6 @@ import {
   Sparkles,
   Copy,
   Check,
-  ExternalLink,
   MessageCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -1292,24 +1291,6 @@ const PhotoBooth = () => {
                   )}
                 </button>
               </div>
-
-              {/* View Live Gallery Shortcut */}
-              <a
-                href="/memories"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: '#7a5948',
-                  fontSize: '0.88rem',
-                  fontWeight: '600',
-                  marginTop: '16px',
-                  textDecoration: 'none'
-                }}
-              >
-                <span>🖼️ ดูรูปภาพและความทรงจำทั้งหมดในงาน (Live Gallery)</span>
-                <ExternalLink size={14} />
-              </a>
             </div>
 
             <button 
