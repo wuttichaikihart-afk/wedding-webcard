@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/*"
+  to = "https://wedding-webcard-e495.vercel.app/:splat"
+  status = 301
+  force = true

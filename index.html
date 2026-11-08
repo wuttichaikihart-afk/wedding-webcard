@@ -2,6 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // ตรวจสอบหากเข้าจากโดเมน Netlify ให้ redirect ส่งต่อไปยัง Vercel ทันที
+      if (window.location.hostname.includes('netlify.app')) {
+        var targetUrl = 'https://wedding-webcard-e495.vercel.app' + window.location.pathname + window.location.search + window.location.hash;
+        window.location.replace(targetUrl);
+      }
+    </script>
     <link rel="icon" type="image/svg+xml" href="/ring.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wedding Toey&Taii</title>

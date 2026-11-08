@@ -21,6 +21,7 @@ import AdminPanel from './components/AdminPanel';      // ระบบจัด�
 import PhotoBooth from './components/PhotoBooth';
 import HostGallery from './components/HostGallery';
 import PrintStation from './components/PrintStation';
+import QRCodeStandee from './components/QRCodeStandee';
 import configData from './data/config.json';               // ข้อมูลและสีธีมจากระบบหลังบ้าน
 
 // คอมโพเนนต์หน้าเว็บหลัก
@@ -61,6 +62,32 @@ const MainSite = () => {
       <GiftRegistry />  
       <MusicPlayer />   
       
+      {/* ปุ่มทางลัดเปิดโฟโต้บูธถ่ายรูป */}
+      <a 
+        href="/photobooth"
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '20px',
+          backgroundColor: '#7a5948',
+          color: '#ffffff',
+          padding: '12px 22px',
+          borderRadius: '30px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          boxShadow: '0 8px 25px rgba(122,89,72,0.35)',
+          zIndex: 99,
+          textDecoration: 'none',
+          fontWeight: '600',
+          fontSize: '0.95rem',
+          border: '1.5px solid #c5a57a',
+          transition: 'transform 0.2s'
+        }}
+      >
+        <span>📸</span> โฟโต้บูธถ่ายรูป
+      </a>   
+      
       <footer style={{
         textAlign: 'center',
         padding: '30px 20px',
@@ -85,6 +112,7 @@ function App() {
         <Route path="/photobooth" element={<PhotoBooth />} />
         <Route path="/memories" element={<HostGallery />} />
         <Route path="/print" element={<PrintStation />} />
+        <Route path="/qrcode" element={<QRCodeStandee />} />
         <Route path="/" element={<MainSite />} />
       </Routes>
     </Router>

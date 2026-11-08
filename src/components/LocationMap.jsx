@@ -10,8 +10,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin } from 'lucide-react';
+import config from '../data/config.json';
 
 const LocationMap = () => {
+  const { location } = config;
+
   return (
     <section className="section-padding" style={{ backgroundColor: 'var(--secondary)' }}>
       <div className="container">
@@ -29,7 +32,7 @@ const LocationMap = () => {
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', marginBottom: '10px' }}>
             <span style={{ fontSize: '1.8rem', animation: 'bounce 2s infinite' }}>🏰</span>
-            <h2 className="section-title" style={{ margin: 0 }}>Location</h2> 
+            <h2 className="section-title" style={{ margin: 0 }}>{location?.title || 'Location'}</h2> 
             <span style={{ fontSize: '1.8rem', animation: 'bounce 2s infinite' }}>📍</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
@@ -37,7 +40,7 @@ const LocationMap = () => {
             <span style={{ color: 'var(--primary)', fontSize: '0.8rem' }}>✧</span>
             <span style={{ height: '1px', width: '40px', backgroundColor: 'var(--primary)', opacity: 0.5 }}></span>
           </div>
-          <p className="section-subtitle">สถานที่จัดงาน</p>
+          <p className="section-subtitle">{location?.subtitle || 'สถานที่จัดงาน'}</p>
         </motion.div>
 
         {/* Layout 2 คอลัมน์: สถานที่จัดงาน (ซ้าย) + ที่พักแนะนำ (ขวา) */}
@@ -57,34 +60,34 @@ const LocationMap = () => {
           >
             <MapPin size={40} color="var(--primary)" style={{ marginBottom: '15px' }} />
             
-            {/* ชื่อสถานที่จัดงาน — แก้ได้ที่นี่ */}
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>อรัญประเทศ</h3>
+            {/* ชื่อสถานที่จัดงาน */}
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{location?.venueName || 'อรัญประเทศ'}</h3>
             
-            {/* ที่อยู่ — แก้ได้ที่นี่ */}
-            <p style={{ color: 'var(--text-light)', marginBottom: '20px' }}>
-              อำเภออรัญประเทศ<br/>
-              จังหวัดสระแก้ว
-            </p>
+            {/* ที่อยู่ */}
+            <p 
+              style={{ color: 'var(--text-light)', marginBottom: '20px' }}
+              dangerouslySetInnerHTML={{ __html: location?.venueAddress || 'อำเภออรัญประเทศ<br/>จังหวัดสระแก้ว' }}
+            />
             
-            {/* กลุ่มปุ่มเปิดแผนที่ Google Maps */}
+            {/* กลุ่มปุ่มเปิดแผนที่ Google Maps (Universal Link รองรับทุกอุปกรณ์ทั้ง iOS และ Android) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', maxWidth: '300px' }}>
               <a 
-                href="https://maps.app.goo.gl/Hi7p29TXgaLWmjQU8"  // ลิงก์งานเช้า
+                href={location?.mapLink1 || "https://www.google.com/maps/search/?api=1&query=13.709788,102.437400"}  // ลิงก์งานเช้า
                 target="_blank" 
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="btn btn-secondary"
                 style={{ width: '100%' }}
               >
-                เปิดนำทางสถานที่จัดงาน
+                {location?.mapLabel1 || "เปิดนำทางสถานที่จัดงาน"}
               </a>
               <a 
-                href="https://maps.app.goo.gl/6jFfwkoo9Uj5eLaF7"  // ลิงก์ฉลองมงคลสมรส
+                href={location?.mapLink2 || "https://www.google.com/maps/search/?api=1&query=13.712136,102.437488"}  // ลิงก์ฉลองมงคลสมรส
                 target="_blank" 
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="btn btn-secondary"
                 style={{ width: '100%' }}
               >
-                ฉลองมงคลสมรส
+                {location?.mapLabel2 || "ฉลองมงคลสมรส"}
               </a>
             </div>
           </motion.div>
@@ -107,31 +110,31 @@ const LocationMap = () => {
             </h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              {/* ที่พักที่ 1 — แก้ชื่อใน <span> และลิงก์ใน href */}
-              <a href="https://maps.app.goo.gl/tfx7gGVWdJR8RzuR7" target="_blank" rel="noreferrer" 
+              {/* ที่พักที่ 1 */}
+              <a href="https://www.google.com/maps/search/?api=1&query=13.723760,102.456628" target="_blank" rel="noopener noreferrer" 
                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color)', borderRadius: '12px', textDecoration: 'none', color: 'var(--text-color)' }}>
-                <span style={{ fontWeight: 500 }}>1. เหมือนฝัน รีสอร์ท</span> {/* ← แก้ชื่อที่พัก */}
+                <span style={{ fontWeight: 500 }}>1. เหมือนฝัน รีสอร์ท</span>
                 <MapPin size={18} color="var(--primary)" />
               </a>
               
               {/* ที่พักที่ 2 */}
-              <a href="https://maps.app.goo.gl/RQTr2sBLTKkY4GLi8" target="_blank" rel="noreferrer" 
+              <a href="https://www.google.com/maps/search/?api=1&query=13.719301,102.461365" target="_blank" rel="noopener noreferrer" 
                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color)', borderRadius: '12px', textDecoration: 'none', color: 'var(--text-color)' }}>
-                <span style={{ fontWeight: 500 }}>2. บ้านเรา รีสอร์ท</span> {/* ← แก้ชื่อที่พัก */}
+                <span style={{ fontWeight: 500 }}>2. บ้านเรา รีสอร์ท</span>
                 <MapPin size={18} color="var(--primary)" />
               </a>
 
               {/* ที่พักที่ 3 */}
-              <a href="https://maps.app.goo.gl/BgUpPxkxupf4NM2QA" target="_blank" rel="noreferrer" 
+              <a href="https://www.google.com/maps/search/?api=1&query=13.721597,102.460855" target="_blank" rel="noopener noreferrer" 
                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color)', borderRadius: '12px', textDecoration: 'none', color: 'var(--text-color)' }}>
-                <span style={{ fontWeight: 500 }}>3. เรือนพักสุวรรณา รีสอร์ท</span> {/* ← แก้ชื่อที่พัก */}
+                <span style={{ fontWeight: 500 }}>3. เรือนพักสุวรรณา รีสอร์ท</span>
                 <MapPin size={18} color="var(--primary)" />
               </a>
 
               {/* ที่พักที่ 4 */}
-              <a href="https://maps.app.goo.gl/Q8NKJZFWFp4SA6fu7" target="_blank" rel="noreferrer" 
+              <a href="https://www.google.com/maps/search/?api=1&query=13.707319,102.484331" target="_blank" rel="noopener noreferrer" 
                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color)', borderRadius: '12px', textDecoration: 'none', color: 'var(--text-color)' }}>
-                <span style={{ fontWeight: 500 }}>4. อัญชันรีสอร์ท</span> {/* ← แก้ชื่อที่พัก */}
+                <span style={{ fontWeight: 500 }}>4. อัญชันรีสอร์ท</span>
                 <MapPin size={18} color="var(--primary)" />
               </a>
 
