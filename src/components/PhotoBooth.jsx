@@ -106,6 +106,19 @@ const PhotoBooth = () => {
     window.open(url, '_blank', 'width=600,height=500');
   };
 
+  const handleDownloadAll = () => {
+    photos.forEach((p, idx) => {
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = p.preview;
+        link.download = `Taii_Toey_Wedding_${idx + 1}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, idx * 350);
+    });
+  };
+
   // ---- CAMERA LOGIC ----
   const startCamera = async (mode = facingMode) => {
     try {
@@ -548,8 +561,8 @@ const PhotoBooth = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#fcf8f2', fontFamily: 'var(--font-body)', padding: '16px', color: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: '100%', maxWidth: '520px', backgroundColor: '#fff', borderRadius: '24px', padding: '24px', boxShadow: '0 12px 45px rgba(122,89,72,0.1)', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#fcf8f2', fontFamily: 'var(--font-body)', padding: '16px 10px', color: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', maxWidth: '480px', backgroundColor: '#fff', borderRadius: '24px', padding: '20px 14px', boxShadow: '0 12px 45px rgba(122,89,72,0.1)', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
         
         {/* Navigation Bar */}
         {(step === 'select' || step === 'photo' || step === 'audio') && (
@@ -1135,68 +1148,132 @@ const PhotoBooth = () => {
 
         {/* STEP 6: SUCCESS & SOCIAL SHARE */}
         {step === 'success' && (
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ textAlign: 'center', padding: '10px 0' }}>
-            <CheckCircle size={70} color="#c5a57a" style={{ margin: '0 auto 16px' }} />
-            <h2 style={{ color: '#7a5948', margin: '0 0 6px 0', fontSize: '1.6rem' }}>ส่งความทรงจำเรียบร้อยแล้ว!</h2>
-            <p style={{ color: '#666', marginBottom: '24px', fontSize: '0.95rem' }}>ขอบคุณ <strong>{name}</strong> ที่มาร่วมแชร์โมเมนต์พิเศษกับเราครับ 💖</p>
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ textAlign: 'center', padding: '6px 0', boxSizing: 'border-box' }}>
+            <div style={{
+              width: '68px',
+              height: '68px',
+              margin: '0 auto 14px',
+              borderRadius: '50%',
+              backgroundColor: '#fbf4ea',
+              border: '2px solid #ecd5b8',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 6px 18px rgba(197,165,122,0.22)'
+            }}>
+              <CheckCircle size={38} color="#7a5948" />
+            </div>
+            <h2 style={{ color: '#7a5948', margin: '0 0 6px 0', fontSize: '1.45rem', fontWeight: '700' }}>
+              ส่งความทรงจำเรียบร้อยแล้ว!
+            </h2>
+            <p style={{ color: '#666', margin: '0 0 18px 0', fontSize: '0.92rem' }}>
+              ขอบคุณ <strong style={{ color: '#7a5948' }}>{name}</strong> ที่มาร่วมแชร์โมเมนต์พิเศษกับเราครับ 💖
+            </p>
             
             {/* DOWNLOAD & SHARE CARDS */}
             {photos.length > 0 && (
-              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #c5a57a', padding: '20px', borderRadius: '18px', marginBottom: '22px', textAlign: 'center' }}>
-                <h4 style={{ margin: '0 0 4px 0', color: '#7a5948', fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <span>📸</span> รูปถ่ายของคุณพร้อมกรอบงานแต่ง ({photos.length} รูป)
-                </h4>
-                <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: '#888' }}>
-                  ติดแฮชแท็ก <strong>#TAIITOEYWEDDING</strong> เพื่อร่วมยินดีกับบ่าวสาว ✨
-                </p>
+              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #ecd5b8', padding: '14px 10px', borderRadius: '18px', marginBottom: '18px', textAlign: 'center', boxSizing: 'border-box' }}>
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    backgroundColor: 'rgba(197,165,122,0.18)',
+                    color: '#7a5948',
+                    padding: '4px 14px',
+                    borderRadius: '20px',
+                    fontSize: '0.82rem',
+                    fontWeight: '700',
+                    marginBottom: '6px'
+                  }}>
+                    <span>📸</span> รูปถ่ายพร้อมกรอบ ({photos.length} รูป)
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#888', letterSpacing: '0.3px' }}>
+                    แชร์โมเมนต์พิเศษพร้อมติดแท็ก <strong style={{ color: '#7a5948' }}>#TAIITOEYWEDDING</strong> ✨
+                  </div>
+                </div>
+
+                {/* Batch Download Button if multiple photos */}
+                {photos.length > 1 && (
+                  <button
+                    onClick={handleDownloadAll}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      backgroundColor: '#ffffff',
+                      color: '#7a5948',
+                      border: '1.5px solid #c5a57a',
+                      borderRadius: '12px',
+                      fontSize: '0.85rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      marginBottom: '12px',
+                      boxShadow: '0 2px 6px rgba(197,165,122,0.15)',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    <Download size={15} /> บันทึกรูปทั้งหมด ({photos.length} รูป)
+                  </button>
+                )}
 
                 <div style={{ 
                   display: 'grid', 
                   gridTemplateColumns: photos.length === 1 ? '1fr' : 'repeat(2, 1fr)', 
-                  gap: '14px',
-                  maxWidth: photos.length === 1 ? '270px' : '100%',
-                  margin: '0 auto'
+                  gap: '10px',
+                  maxWidth: photos.length === 1 ? '260px' : '100%',
+                  margin: '0 auto',
+                  boxSizing: 'border-box'
                 }}>
                   {photos.map((p, idx) => (
-                    <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <img 
-                        src={p.preview} 
-                        alt={`dl-${idx}`} 
-                        style={{ width: '100%', aspectRatio: '9/16', objectFit: 'cover', borderRadius: '10px', border: '2px solid #fff', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} 
-                      />
-                      <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                        <a 
-                          href={p.preview} 
-                          download={`Taii_Toey_Wedding_${idx + 1}.jpg`}
-                          style={{ 
-                            flex: 1, 
-                            minWidth: 0,
-                            padding: '8px 6px', 
-                            backgroundColor: '#7a5948', 
-                            color: '#fff', 
-                            textDecoration: 'none', 
-                            borderRadius: '8px', 
-                            fontSize: '0.8rem', 
-                            fontWeight: '600', 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center', 
-                            gap: '4px',
-                            whiteSpace: 'nowrap',
-                            boxShadow: '0 2px 6px rgba(122,89,72,0.2)'
-                          }}
-                          title="บันทึกรูปภาพ"
-                        >
-                          <Download size={14} />
-                          <span>บันทึก</span>
-                        </a>
+                    <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '7px', minWidth: 0, boxSizing: 'border-box' }}>
+                      <div style={{ position: 'relative', width: '100%', aspectRatio: '9/16', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.12)', border: '2px solid #fff' }}>
+                        <img 
+                          src={p.preview} 
+                          alt={`dl-${idx}`} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                        />
+                        <div style={{ position: 'absolute', top: '6px', left: '6px', backgroundColor: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '0.68rem', fontWeight: '600', padding: '2px 7px', borderRadius: '8px' }}>
+                          #{idx + 1}
+                        </div>
+                      </div>
 
-                        {/* Icon แชร์รูป / IG Story */}
+                      {/* Primary Button: บันทึกรูป */}
+                      <a 
+                        href={p.preview} 
+                        download={`Taii_Toey_Wedding_${idx + 1}.jpg`}
+                        style={{ 
+                          width: '100%', 
+                          boxSizing: 'border-box',
+                          padding: '9px 0', 
+                          backgroundColor: '#7a5948', 
+                          color: '#fff', 
+                          textDecoration: 'none', 
+                          borderRadius: '10px', 
+                          fontSize: '0.8rem', 
+                          fontWeight: '600', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          gap: '6px',
+                          boxShadow: '0 2px 6px rgba(122,89,72,0.2)'
+                        }}
+                        title="บันทึกรูปภาพนี้"
+                      >
+                        <Download size={14} />
+                        <span>บันทึกรูป</span>
+                      </a>
+
+                      {/* Social Share Icons Row (IG / LINE / FB) */}
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px', width: '100%', boxSizing: 'border-box' }}>
+                        {/* Instagram Story / Web Share */}
                         <button 
                           onClick={() => handleSharePhoto(p, idx)}
                           style={{ 
-                            width: '32px', 
-                            height: '32px', 
+                            height: '34px', 
                             padding: 0, 
                             background: 'linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%)', 
                             color: '#fff', 
@@ -1206,20 +1283,18 @@ const PhotoBooth = () => {
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
-                            flexShrink: 0,
-                            boxShadow: '0 2px 6px rgba(220,39,67,0.2)'
+                            boxShadow: '0 2px 5px rgba(220,39,67,0.2)'
                           }}
                           title="แชร์ลง Instagram Story / โซเชียล"
                         >
                           <Share2 size={15} />
                         </button>
 
-                        {/* Icon LINE */}
+                        {/* LINE */}
                         <button 
                           onClick={handleLineShare}
                           style={{ 
-                            width: '32px', 
-                            height: '32px', 
+                            height: '34px', 
                             padding: 0, 
                             backgroundColor: '#06c755', 
                             color: '#fff', 
@@ -1229,20 +1304,18 @@ const PhotoBooth = () => {
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
-                            flexShrink: 0,
-                            boxShadow: '0 2px 6px rgba(6,199,85,0.2)'
+                            boxShadow: '0 2px 5px rgba(6,199,85,0.2)'
                           }}
                           title="ส่งต่อทาง LINE"
                         >
                           <MessageCircle size={15} />
                         </button>
 
-                        {/* Icon Facebook */}
+                        {/* Facebook */}
                         <button 
                           onClick={handleFacebookShare}
                           style={{ 
-                            width: '32px', 
-                            height: '32px', 
+                            height: '34px', 
                             padding: 0, 
                             backgroundColor: '#1877f2', 
                             color: '#fff', 
@@ -1252,8 +1325,7 @@ const PhotoBooth = () => {
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
-                            flexShrink: 0,
-                            boxShadow: '0 2px 6px rgba(24,119,242,0.2)'
+                            boxShadow: '0 2px 5px rgba(24,119,242,0.2)'
                           }}
                           title="แชร์ลง Facebook"
                         >
@@ -1277,9 +1349,25 @@ const PhotoBooth = () => {
                 setInsertedRecord(null);
                 setStep('name'); 
               }}
-              style={{ width: '100%', padding: '15px', backgroundColor: '#f0ece6', color: '#555', border: 'none', borderRadius: '12px', fontSize: '1rem', cursor: 'pointer', fontWeight: '600' }}
+              style={{ 
+                width: '100%', 
+                padding: '14px', 
+                backgroundColor: '#ffffff', 
+                color: '#7a5948', 
+                border: '1.5px solid #d8c4b2', 
+                borderRadius: '14px', 
+                fontSize: '0.95rem', 
+                cursor: 'pointer', 
+                fontWeight: '600',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                boxSizing: 'border-box'
+              }}
             >
-              ถ่ายรูปใหม่อีกครั้ง 📸
+              <span>📸</span> ถ่ายรูปใหม่อีกครั้ง
             </button>
           </motion.div>
         )}
