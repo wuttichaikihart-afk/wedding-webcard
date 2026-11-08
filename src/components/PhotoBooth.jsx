@@ -561,14 +561,14 @@ const PhotoBooth = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#fcf8f2', fontFamily: 'var(--font-body)', padding: '16px 10px', color: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
-      <div style={{ width: '100%', maxWidth: '480px', backgroundColor: '#fff', borderRadius: '24px', padding: '20px 14px', boxShadow: '0 12px 45px rgba(122,89,72,0.1)', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#fff5f7', backgroundImage: 'linear-gradient(180deg, #fff7f9 0%, #fdf0f4 100%)', fontFamily: 'var(--font-body)', padding: '16px 10px', color: '#4a3038', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', maxWidth: '480px', backgroundColor: '#fff', borderRadius: '24px', padding: '20px 14px', border: '1.5px solid #f0c4cf', boxShadow: '0 16px 45px rgba(196,109,130,0.12)', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
         
         {/* Navigation Bar */}
         {(step === 'select' || step === 'photo' || step === 'audio') && (
           <button 
             onClick={() => setStep(step === 'select' ? 'name' : 'select')} 
-            style={{ background: 'none', border: 'none', display: 'flex', alignItems: 'center', gap: '6px', color: '#7a5948', cursor: 'pointer', marginBottom: '16px', fontSize: '0.95rem', fontWeight: '500' }}
+            style={{ background: 'none', border: 'none', display: 'flex', alignItems: 'center', gap: '6px', color: '#c46d82', cursor: 'pointer', marginBottom: '16px', fontSize: '0.95rem', fontWeight: '600' }}
           >
             <ArrowLeft size={18} /> ย้อนกลับ
           </button>
@@ -577,19 +577,19 @@ const PhotoBooth = () => {
         {/* STEP 1: NAME */}
         {step === 'name' && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', padding: '30px 10px' }}>
-            <div style={{ display: 'inline-block', padding: '8px 20px', borderRadius: '30px', background: 'rgba(197,165,122,0.15)', color: '#c5a57a', fontFamily: 'Montserrat, sans-serif', fontSize: '0.85rem', letterSpacing: '4px', fontWeight: '700', marginBottom: '16px' }}>
+            <div style={{ display: 'inline-block', padding: '8px 20px', borderRadius: '30px', background: 'rgba(232,168,184,0.25)', border: '1px solid #f0c4cf', color: '#c46d82', fontFamily: 'Montserrat, sans-serif', fontSize: '0.85rem', letterSpacing: '4px', fontWeight: '700', marginBottom: '16px' }}>
               PHOTO BOOTH &bull; LIVE
             </div>
-            <h1 style={{ fontFamily: 'var(--font-cursive)', fontSize: '3.2rem', color: '#7a5948', margin: '0 0 10px 0', lineHeight: '1.1' }}>
+            <h1 style={{ fontFamily: 'var(--font-cursive)', fontSize: '3.2rem', color: '#c46d82', margin: '0 0 10px 0', lineHeight: '1.1' }}>
               Taii &amp; Toey
             </h1>
-            <p style={{ color: '#888', marginBottom: '20px', fontSize: '1rem' }}>
+            <p style={{ color: '#88686e', marginBottom: '20px', fontSize: '1rem' }}>
               กล้องโฟโต้บูธ &amp; สมุดบันทึกความทรงจำวันแต่งงาน
             </p>
 
             {/* พรีวิวเลือกกรอบฟิลเตอร์งานแต่งตั้งแต่หน้าแรก */}
             <div style={{ marginBottom: '22px', textAlign: 'left' }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: '600', color: '#7a5948', marginBottom: '10px', textAlign: 'center' }}>
+              <div style={{ fontSize: '0.88rem', fontWeight: '600', color: '#c46d82', marginBottom: '10px', textAlign: 'center' }}>
                 ✨ เลือกกรอบฟิลเตอร์งานแต่ง (เปลี่ยนเพิ่มในกล้องได้) ✨
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
@@ -601,12 +601,12 @@ const PhotoBooth = () => {
                       onClick={() => setActiveFrame(f)}
                       style={{
                         borderRadius: '14px',
-                        border: isActive ? '2.5px solid #c5a57a' : '1.5px solid #eee',
-                        backgroundColor: isActive ? '#fffaf3' : '#fafafa',
+                        border: isActive ? '2.5px solid #c46d82' : '1.5px solid #f0c4cf',
+                        backgroundColor: isActive ? '#fff0f3' : '#fafafa',
                         padding: '8px',
                         cursor: 'pointer',
                         textAlign: 'center',
-                        boxShadow: isActive ? '0 4px 14px rgba(197,165,122,0.22)' : 'none',
+                        boxShadow: isActive ? '0 4px 14px rgba(196,109,130,0.2)' : 'none',
                         transition: 'all 0.2s'
                       }}
                     >
@@ -629,17 +629,17 @@ const PhotoBooth = () => {
                           aspectRatio: '9/16',
                           borderRadius: '8px',
                           marginBottom: '6px',
-                          backgroundColor: '#f0ece6',
+                          backgroundColor: '#fce8ed',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: '#999',
+                          color: '#c46d82',
                           fontSize: '0.8rem'
                         }}>
                           ภาพต้นฉบับ
                         </div>
                       )}
-                      <div style={{ fontSize: '0.8rem', fontWeight: isActive ? '700' : '500', color: isActive ? '#7a5948' : '#666' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: isActive ? '700' : '500', color: isActive ? '#c46d82' : '#666' }}>
                         {f.shortName}
                       </div>
                     </div>
@@ -653,7 +653,7 @@ const PhotoBooth = () => {
               value={name} 
               onChange={e => setName(e.target.value)} 
               placeholder="พิมพ์ชื่อของคุณ..." 
-              style={{ width: '100%', padding: '16px', borderRadius: '14px', border: '2px solid #eee', fontSize: '1.1rem', textAlign: 'center', marginBottom: '20px', outline: 'none', boxSizing: 'border-box' }}
+              style={{ width: '100%', padding: '16px', borderRadius: '14px', border: '2px solid #f0c4cf', fontSize: '1.1rem', textAlign: 'center', marginBottom: '20px', outline: 'none', boxSizing: 'border-box' }}
               onKeyDown={(e) => e.key === 'Enter' && name.trim() && setStep('select')}
             />
             <button 
@@ -661,7 +661,7 @@ const PhotoBooth = () => {
               style={{ 
                 width: '100%', 
                 padding: '16px', 
-                backgroundColor: '#7a5948', 
+                background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)', 
                 color: '#fff', 
                 border: 'none', 
                 borderRadius: '14px', 
@@ -669,7 +669,7 @@ const PhotoBooth = () => {
                 fontWeight: '600',
                 cursor: 'pointer', 
                 opacity: name.trim() ? 1 : 0.5,
-                boxShadow: '0 6px 20px rgba(122,89,72,0.25)',
+                boxShadow: '0 6px 20px rgba(196,109,130,0.3)',
                 transition: 'all 0.2s'
               }}
               disabled={!name.trim()}
@@ -682,9 +682,9 @@ const PhotoBooth = () => {
         {/* STEP 2: SELECT */}
         {step === 'select' && (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '24px', color: '#2c2c2c' }}>
-              สวัสดีคุณ <span style={{ color: '#7a5948' }}>{name}</span><br/>
-              <span style={{ fontSize: '0.95rem', color: '#888', fontWeight: 'normal' }}>
+            <h2 style={{ textAlign: 'center', marginBottom: '24px', color: '#4a3038' }}>
+              สวัสดีคุณ <span style={{ color: '#c46d82' }}>{name}</span><br/>
+              <span style={{ fontSize: '0.95rem', color: '#88686e', fontWeight: 'normal' }}>
                 เลือกสิ่งที่คุณต้องการฝากไว้ให้บ่าวสาว
               </span>
             </h2>
@@ -697,26 +697,26 @@ const PhotoBooth = () => {
                   alignItems: 'center', 
                   padding: '20px', 
                   borderRadius: '16px', 
-                  border: '2px solid #c5a57a', 
-                  backgroundColor: '#fffaf3', 
+                  border: '2px solid #f0c4cf', 
+                  backgroundColor: '#fff5f7', 
                   cursor: 'pointer', 
                   gap: '16px',
-                  boxShadow: '0 4px 15px rgba(197,165,122,0.15)',
+                  boxShadow: '0 4px 15px rgba(196,109,130,0.12)',
                   textAlign: 'left'
                 }}
               >
-                <div style={{ backgroundColor: '#c5a57a', padding: '14px', borderRadius: '50%', color: '#fff' }}>
+                <div style={{ background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)', padding: '14px', borderRadius: '50%', color: '#fff' }}>
                   <Camera size={28} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <h3 style={{ margin: '0 0 4px 0', color: '#7a5948', fontSize: '1.15rem' }}>
+                  <h3 style={{ margin: '0 0 4px 0', color: '#c46d82', fontSize: '1.15rem' }}>
                     ถ่ายรูปพร้อมกรอบแต่งงาน
                   </h3>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
                     {photos.length > 0 ? `ถ่ายแล้ว ${photos.length} รูป (กดเพื่อถ่ายเพิ่ม)` : 'เลือกกรอบซุ้มโค้ง หรือโมเดิร์นสตูดิโอได้'}
                   </p>
                 </div>
-                {photos.length > 0 && <CheckCircle color="#c5a57a" size={24} />}
+                {photos.length > 0 && <CheckCircle color="#c46d82" size={24} />}
               </button>
 
               <button 
@@ -733,25 +733,25 @@ const PhotoBooth = () => {
                   textAlign: 'left'
                 }}
               >
-                <div style={{ backgroundColor: '#f0e6e0', padding: '14px', borderRadius: '50%', color: '#7a5948' }}>
+                <div style={{ backgroundColor: '#fce8ed', padding: '14px', borderRadius: '50%', color: '#c46d82' }}>
                   <Mic size={28} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <h3 style={{ margin: '0 0 4px 0', color: '#333', fontSize: '1.15rem' }}>
+                  <h3 style={{ margin: '0 0 4px 0', color: '#4a3038', fontSize: '1.15rem' }}>
                     อัดเสียงอวยพร (เทปคาสเซ็ท)
                   </h3>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
                     {audioBlob ? 'บันทึกเสียงเรียบร้อยแล้ว (กดเพื่ออัดใหม่)' : 'ฝากข้อความเสียงซึ้งๆ หรือคำอวยพร'}
                   </p>
                 </div>
-                {audioBlob && <CheckCircle color="#7a5948" size={24} />}
+                {audioBlob && <CheckCircle color="#c46d82" size={24} />}
               </button>
             </div>
 
             {/* PREVIEW OF READY MEDIA */}
             {(photos.length > 0 || audioBlob) && (
-              <div style={{ marginTop: '24px', padding: '16px', backgroundColor: '#fdfbf7', borderRadius: '16px', border: '1px dashed #c5a57a' }}>
-                <h4 style={{ margin: '0 0 12px 0', textAlign: 'center', color: '#7a5948', fontSize: '0.95rem' }}>
+              <div style={{ marginTop: '24px', padding: '16px', backgroundColor: '#fff8fa', borderRadius: '16px', border: '1px dashed #f0c4cf' }}>
+                <h4 style={{ margin: '0 0 12px 0', textAlign: 'center', color: '#c46d82', fontSize: '0.95rem' }}>
                   ความทรงจำของคุณที่พร้อมส่ง ({photos.length} รูป)
                 </h4>
                 
@@ -787,7 +787,7 @@ const PhotoBooth = () => {
                 style={{ 
                   width: '100%', 
                   padding: '16px', 
-                  backgroundColor: '#7a5948', 
+                  background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)', 
                   color: '#fff', 
                   border: 'none', 
                   borderRadius: '14px', 
@@ -799,7 +799,7 @@ const PhotoBooth = () => {
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   gap: '10px', 
-                  boxShadow: '0 6px 20px rgba(122,89,72,0.3)' 
+                  boxShadow: '0 6px 20px rgba(196,109,130,0.3)' 
                 }}
               >
                 <Send size={20} /> ส่งความทรงจำให้บ่าวสาว &amp; บันทึกรูปภาพ
@@ -815,10 +815,10 @@ const PhotoBooth = () => {
             {/* Header info */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <div style={{ textAlign: 'left' }}>
-                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#7a5948' }}>📸 ถ่ายรูปโฟโต้บูธ</h3>
-                <span style={{ fontSize: '0.8rem', color: '#888' }}>เห็นกรอบรูปก่อนถ่ายจริง</span>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#c46d82' }}>📸 ถ่ายรูปโฟโต้บูธ</h3>
+                <span style={{ fontSize: '0.8rem', color: '#88686e' }}>เห็นกรอบรูปก่อนถ่ายจริง</span>
               </div>
-              <span style={{ backgroundColor: '#f0e6e0', color: '#7a5948', padding: '6px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+              <span style={{ backgroundColor: '#fce8ed', color: '#c46d82', padding: '6px 14px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 'bold', border: '1px solid #f0c4cf' }}>
                 {photos.length} / {MAX_PHOTOS}
               </span>
             </div>
@@ -835,9 +835,9 @@ const PhotoBooth = () => {
                       flex: 1,
                       padding: '8px 12px',
                       borderRadius: '12px',
-                      border: isActive ? '2px solid #c5a57a' : '1px solid #eee',
-                      backgroundColor: isActive ? '#fffaf3' : '#fafafa',
-                      color: isActive ? '#7a5948' : '#777',
+                      border: isActive ? '2px solid #c46d82' : '1px solid #f0c4cf',
+                      backgroundColor: isActive ? '#fff0f3' : '#fafafa',
+                      color: isActive ? '#c46d82' : '#88686e',
                       fontWeight: isActive ? '700' : '500',
                       fontSize: '0.85rem',
                       cursor: 'pointer',
@@ -953,7 +953,7 @@ const PhotoBooth = () => {
                 <button 
                   onClick={() => setTimerSeconds(prev => prev === 0 ? 3 : 0)}
                   style={{ 
-                    backgroundColor: timerSeconds > 0 ? '#c5a57a' : 'rgba(255,255,255,0.85)', 
+                    backgroundColor: timerSeconds > 0 ? '#c46d82' : 'rgba(255,255,255,0.85)', 
                     backdropFilter: 'blur(5px)', 
                     border: 'none', 
                     borderRadius: '50%', 
@@ -988,8 +988,8 @@ const PhotoBooth = () => {
                     padding: '6px 12px', 
                     borderRadius: '20px', 
                     border: '1px solid',
-                    borderColor: activeFilter.name === filter.name ? '#c5a57a' : '#ddd',
-                    backgroundColor: activeFilter.name === filter.name ? '#c5a57a' : '#fff',
+                    borderColor: activeFilter.name === filter.name ? '#c46d82' : '#f0c4cf',
+                    backgroundColor: activeFilter.name === filter.name ? '#c46d82' : '#fff',
                     color: activeFilter.name === filter.name ? '#fff' : '#666',
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
@@ -1020,17 +1020,17 @@ const PhotoBooth = () => {
                   height: '50px',
                   borderRadius: '50%',
                   backgroundColor: '#fff',
-                  border: '1.5px solid #ddd',
+                  border: '1.5px solid #f0c4cf',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: photos.length >= MAX_PHOTOS ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                  boxShadow: '0 4px 12px rgba(196,109,130,0.12)',
                   transition: 'transform 0.1s'
                 }}
                 title="เลือกรูปจากเครื่อง/อัลบั้มมาใส่กรอบ"
               >
-                <ImageIcon size={22} color="#7a5948" />
+                <ImageIcon size={22} color="#c46d82" />
               </button>
 
               <button 
@@ -1040,10 +1040,10 @@ const PhotoBooth = () => {
                   width: '76px', 
                   height: '76px', 
                   borderRadius: '50%', 
-                  backgroundColor: photos.length >= MAX_PHOTOS ? '#ccc' : '#c5a57a', 
+                  background: photos.length >= MAX_PHOTOS ? '#ccc' : 'linear-gradient(135deg, #f0a8b8 0%, #c46d82 100%)', 
                   color: '#fff', 
-                  border: '6px solid #fbf4e8', 
-                  boxShadow: '0 6px 20px rgba(197,165,122,0.4)', 
+                  border: '6px solid #fdf0f4', 
+                  boxShadow: '0 6px 20px rgba(196,109,130,0.38)', 
                   cursor: photos.length >= MAX_PHOTOS ? 'not-allowed' : 'pointer', 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -1059,7 +1059,7 @@ const PhotoBooth = () => {
 
             {/* Thumbnails of taken photos */}
             {photos.length > 0 && (
-              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '8px 0', borderTop: '1px solid #eee', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', padding: '8px 0', borderTop: '1px solid #f0c4cf', marginBottom: '10px' }}>
                 {photos.map((p, idx) => (
                   <div key={idx} style={{ position: 'relative', flexShrink: 0 }}>
                     <img 
@@ -1080,7 +1080,7 @@ const PhotoBooth = () => {
             
             <button 
               onClick={() => setStep('select')} 
-              style={{ width: '100%', padding: '14px', backgroundColor: '#7a5948', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: '600', fontSize: '1rem' }}
+              style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)', color: '#fff', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: '600', fontSize: '1rem', boxShadow: '0 4px 14px rgba(196,109,130,0.25)' }}
             >
               เสร็จสิ้นการถ่ายรูป ({photos.length} รูป)
             </button>
@@ -1090,7 +1090,7 @@ const PhotoBooth = () => {
         {/* STEP 4: AUDIO TAPE */}
         {step === 'audio' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center' }}>
-            <h3 style={{ marginBottom: '24px', color: '#7a5948' }}>📼 เทปเสียงอวยพร</h3>
+            <h3 style={{ marginBottom: '24px', color: '#c46d82' }}>📼 เทปเสียงอวยพร</h3>
 
             {/* Cassette Tape UI */}
             <div style={{ width: '100%', maxWidth: '300px', height: '180px', backgroundColor: '#d1d5db', borderRadius: '15px', position: 'relative', border: '2px solid #9ca3af', margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'inset 0 0 10px rgba(0,0,0,0.1), 0 10px 20px rgba(0,0,0,0.1)' }}>
@@ -1111,7 +1111,7 @@ const PhotoBooth = () => {
             {!audioPreviewUrl && (
               <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
                 {!isRecording ? (
-                  <button onClick={startRecording} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '15px 30px', backgroundColor: '#e11d48', color: '#fff', border: 'none', borderRadius: '30px', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 4px 10px rgba(225,29,72,0.3)' }}>
+                  <button onClick={startRecording} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '15px 30px', backgroundColor: '#c46d82', color: '#fff', border: 'none', borderRadius: '30px', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 4px 10px rgba(196,109,130,0.3)' }}>
                     <div style={{ width: '12px', height: '12px', backgroundColor: '#fff', borderRadius: '50%' }}></div> กดเพื่อบันทึกเสียง
                   </button>
                 ) : (
@@ -1131,7 +1131,7 @@ const PhotoBooth = () => {
               </div>
             )}
 
-            <button onClick={() => setStep('select')} style={{ width: '100%', padding: '15px', backgroundColor: '#7a5948', color: '#fff', border: 'none', borderRadius: '12px', marginTop: '24px', cursor: 'pointer', fontWeight: '600' }}>
+            <button onClick={() => setStep('select')} style={{ width: '100%', padding: '15px', background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)', color: '#fff', border: 'none', borderRadius: '12px', marginTop: '24px', cursor: 'pointer', fontWeight: '600' }}>
               เสร็จสิ้นการอัดเสียง
             </button>
           </motion.div>
@@ -1140,9 +1140,9 @@ const PhotoBooth = () => {
         {/* STEP 5: UPLOADING */}
         {step === 'uploading' && (
           <div style={{ textAlign: 'center', padding: '50px 0' }}>
-            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }} style={{ margin: '0 auto 20px', width: '50px', height: '50px', border: '5px solid #f3f3f3', borderTop: '5px solid #c5a57a', borderRadius: '50%' }}></motion.div>
-            <h3 style={{ color: '#7a5948' }}>กำลังส่งข้อมูลแห่งความทรงจำ...</h3>
-            <p style={{ color: '#666' }}>กรุณารอสักครู่นะครับ</p>
+            <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }} style={{ margin: '0 auto 20px', width: '50px', height: '50px', border: '5px solid #fce8ed', borderTop: '5px solid #c46d82', borderRadius: '50%' }}></motion.div>
+            <h3 style={{ color: '#c46d82' }}>กำลังส่งข้อมูลแห่งความทรงจำ...</h3>
+            <p style={{ color: '#88686e' }}>กรุณารอสักครู่นะครับ</p>
           </div>
         )}
 
@@ -1154,32 +1154,32 @@ const PhotoBooth = () => {
               height: '68px',
               margin: '0 auto 14px',
               borderRadius: '50%',
-              backgroundColor: '#fbf4ea',
-              border: '2px solid #ecd5b8',
+              backgroundColor: '#fdf0f4',
+              border: '2px solid #f0c4cf',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 6px 18px rgba(197,165,122,0.22)'
+              boxShadow: '0 6px 18px rgba(196,109,130,0.18)'
             }}>
-              <CheckCircle size={38} color="#7a5948" />
+              <CheckCircle size={38} color="#c46d82" />
             </div>
-            <h2 style={{ color: '#7a5948', margin: '0 0 6px 0', fontSize: '1.45rem', fontWeight: '700' }}>
+            <h2 style={{ color: '#c46d82', margin: '0 0 6px 0', fontSize: '1.45rem', fontWeight: '700' }}>
               ส่งความทรงจำเรียบร้อยแล้ว!
             </h2>
-            <p style={{ color: '#666', margin: '0 0 18px 0', fontSize: '0.92rem' }}>
-              ขอบคุณ <strong style={{ color: '#7a5948' }}>{name}</strong> ที่มาร่วมแชร์โมเมนต์พิเศษกับเราครับ 💖
+            <p style={{ color: '#88686e', margin: '0 0 18px 0', fontSize: '0.92rem' }}>
+              ขอบคุณ <strong style={{ color: '#c46d82' }}>{name}</strong> ที่มาร่วมแชร์โมเมนต์พิเศษกับเราครับ 💖
             </p>
             
             {/* DOWNLOAD & SHARE CARDS */}
             {photos.length > 0 && (
-              <div style={{ backgroundColor: '#fffaf3', border: '1.5px solid #ecd5b8', padding: '14px 10px', borderRadius: '18px', marginBottom: '18px', textAlign: 'center', boxSizing: 'border-box' }}>
+              <div style={{ backgroundColor: '#fff8fa', border: '1.5px solid #f0c4cf', padding: '14px 10px', borderRadius: '18px', marginBottom: '18px', textAlign: 'center', boxSizing: 'border-box' }}>
                 <div style={{ marginBottom: '12px' }}>
                   <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
-                    backgroundColor: 'rgba(197,165,122,0.18)',
-                    color: '#7a5948',
+                    backgroundColor: 'rgba(232,168,184,0.25)',
+                    color: '#c46d82',
                     padding: '4px 14px',
                     borderRadius: '20px',
                     fontSize: '0.82rem',
@@ -1188,8 +1188,8 @@ const PhotoBooth = () => {
                   }}>
                     <span>📸</span> รูปถ่ายพร้อมกรอบ ({photos.length} รูป)
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: '#888', letterSpacing: '0.3px' }}>
-                    แชร์โมเมนต์พิเศษพร้อมติดแท็ก <strong style={{ color: '#7a5948' }}>#TAIITOEYWEDDING</strong> ✨
+                  <div style={{ fontSize: '0.78rem', color: '#88686e', letterSpacing: '0.3px' }}>
+                    แชร์โมเมนต์พิเศษพร้อมติดแท็ก <strong style={{ color: '#c46d82' }}>#TAIITOEYWEDDING</strong> ✨
                   </div>
                 </div>
 
@@ -1201,8 +1201,8 @@ const PhotoBooth = () => {
                       width: '100%',
                       padding: '10px 12px',
                       backgroundColor: '#ffffff',
-                      color: '#7a5948',
-                      border: '1.5px solid #c5a57a',
+                      color: '#c46d82',
+                      border: '1.5px solid #c46d82',
                       borderRadius: '12px',
                       fontSize: '0.85rem',
                       fontWeight: '600',
@@ -1212,7 +1212,7 @@ const PhotoBooth = () => {
                       justifyContent: 'center',
                       gap: '8px',
                       marginBottom: '12px',
-                      boxShadow: '0 2px 6px rgba(197,165,122,0.15)',
+                      boxShadow: '0 2px 6px rgba(196,109,130,0.15)',
                       boxSizing: 'border-box'
                     }}
                   >
@@ -1230,13 +1230,13 @@ const PhotoBooth = () => {
                 }}>
                   {photos.map((p, idx) => (
                     <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '7px', minWidth: 0, boxSizing: 'border-box' }}>
-                      <div style={{ position: 'relative', width: '100%', aspectRatio: '9/16', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.12)', border: '2px solid #fff' }}>
+                      <div style={{ position: 'relative', width: '100%', aspectRatio: '9/16', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(196,109,130,0.12)', border: '2px solid #fff' }}>
                         <img 
                           src={p.preview} 
                           alt={`dl-${idx}`} 
                           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
                         />
-                        <div style={{ position: 'absolute', top: '6px', left: '6px', backgroundColor: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '0.68rem', fontWeight: '600', padding: '2px 7px', borderRadius: '8px' }}>
+                        <div style={{ position: 'absolute', top: '6px', left: '6px', backgroundColor: 'rgba(74,48,56,0.65)', backdropFilter: 'blur(4px)', color: '#fff', fontSize: '0.68rem', fontWeight: '600', padding: '2px 7px', borderRadius: '8px' }}>
                           #{idx + 1}
                         </div>
                       </div>
@@ -1249,7 +1249,7 @@ const PhotoBooth = () => {
                           width: '100%', 
                           boxSizing: 'border-box',
                           padding: '9px 0', 
-                          backgroundColor: '#7a5948', 
+                          background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)', 
                           color: '#fff', 
                           textDecoration: 'none', 
                           borderRadius: '10px', 
@@ -1259,7 +1259,7 @@ const PhotoBooth = () => {
                           alignItems: 'center', 
                           justifyContent: 'center', 
                           gap: '6px',
-                          boxShadow: '0 2px 6px rgba(122,89,72,0.2)'
+                          boxShadow: '0 2px 6px rgba(196,109,130,0.28)'
                         }}
                         title="บันทึกรูปภาพนี้"
                       >
@@ -1353,8 +1353,8 @@ const PhotoBooth = () => {
                 width: '100%', 
                 padding: '14px', 
                 backgroundColor: '#ffffff', 
-                color: '#7a5948', 
-                border: '1.5px solid #d8c4b2', 
+                color: '#c46d82', 
+                border: '1.5px solid #f0c4cf', 
                 borderRadius: '14px', 
                 fontSize: '0.95rem', 
                 cursor: 'pointer', 
@@ -1363,7 +1363,7 @@ const PhotoBooth = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                boxShadow: '0 2px 8px rgba(196,109,130,0.06)',
                 boxSizing: 'border-box'
               }}
             >
