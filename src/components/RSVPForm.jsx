@@ -16,8 +16,7 @@ const RSVPForm = () => {
   // State ของฟอร์ม — เก็บข้อมูลที่ผู้ใช้กรอก
   // ==========================================
   const [formData, setFormData] = useState({
-    firstName: '',      // ชื่อจริง
-    lastName: '',       // นามสกุล
+    firstName: '',      // ชื่อ
     isAttending: 'true', // สถานะ: 'true' = ไปร่วม, 'false' = ไม่ไปร่วม
     companions: '0'     // จำนวนผู้ติดตาม
   });
@@ -48,7 +47,7 @@ const RSVPForm = () => {
       .from('rsvps')
       .insert([{ 
         first_name: formData.firstName,
-        last_name: formData.lastName,
+        last_name: '',
         attendance: attendanceText
       }]);
 
@@ -113,30 +112,18 @@ const RSVPForm = () => {
             // ==========================================
             <form onSubmit={handleSubmit} className="glass-panel" style={{ padding: '40px', backgroundColor: 'var(--secondary-alt)' }}>
               
-              {/* ช่องชื่อจริงและนามสกุล */}
-              <div className="rsvp-name-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                <div className="form-group">
-                  <label className="form-label">ชื่อจริง (First Name) *</label>
-                  <input 
-                    type="text" 
-                    name="firstName" 
-                    required 
-                    className="form-control"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">นามสกุล (Last Name) *</label>
-                  <input 
-                    type="text" 
-                    name="lastName" 
-                    required 
-                    className="form-control"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                  />
-                </div>
+              {/* ช่องกรอกชื่อ */}
+              <div className="form-group">
+                <label className="form-label">ชื่อ (Name) *</label>
+                <input 
+                  type="text" 
+                  name="firstName" 
+                  required 
+                  className="form-control"
+                  placeholder="พิมพ์ชื่อของคุณ..."
+                  value={formData.firstName}
+                  onChange={handleChange}
+                />
               </div>
 
               {/* ==========================================
