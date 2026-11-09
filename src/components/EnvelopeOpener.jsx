@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import config from '../data/config.json';
-import envelopeBg from '../assets/pic_no_112.jpg';
+import envelopeBg from '../assets/envelope_bg.jpg';
 
 const EnvelopeOpener = ({ onOpen }) => {
   const [isOpen, setIsOpen] = useState(false);

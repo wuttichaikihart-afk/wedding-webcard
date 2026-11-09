@@ -18,13 +18,13 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 // จะถูกโหลดและแสดงในแกลเลอรีโดยอัตโนมัติ
 // เช่น: pic1.jpg, pic2.jpg, ..., pic99.jpg
 // ==========================================
-const modules = import.meta.glob(['../assets/pic*.jpg', '../assets/pic*.JPG', '../assets/pic*.png', '../assets/pic*.PNG'], { eager: true, import: 'default' });
+const modules = import.meta.glob(['../assets/pic*.jpg', '../assets/pic*.JPG', '../assets/pic*.png', '../assets/pic*.PNG', '../assets/gallery/*.*'], { eager: true, import: 'default' });
 
 // จัดเรียงรูปตามตัวเลข (1, 2, 3, ...)
 const images = Object.keys(modules)
   .sort((a, b) => {
-    const matchA = a.match(/pic(\d+)\.(jpg|png)/i);
-    const matchB = b.match(/pic(\d+)\.(jpg|png)/i);
+    const matchA = a.match(/(?:pic|\/)?(\d+)\.(jpg|png|jpeg|webp)/i);
+    const matchB = b.match(/(?:pic|\/)?(\d+)\.(jpg|png|jpeg|webp)/i);
     const numA = matchA ? parseInt(matchA[1], 10) : 0;
     const numB = matchB ? parseInt(matchB[1], 10) : 0;
     return numA - numB;
@@ -101,6 +101,11 @@ const Gallery = () => {
       carouselRef.current.scrollBy({ left: 320, behavior: 'smooth' });
     }
   };
+
+  // หากยังไม่มีรูปภาพในแกลเลอรี ให้ซ่อนส่วนนี้ชั่วคราวเพื่อความสวยงาม
+  if (images.length === 0) {
+    return null;
+  }
 
   return (
     <section className="section-padding" style={{ backgroundColor: 'var(--bg-color)', overflow: 'hidden' }}>

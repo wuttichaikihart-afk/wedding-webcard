@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Gallery backups & local uploads
+backup_old_gallery/
+แกลลอรี่/
+
