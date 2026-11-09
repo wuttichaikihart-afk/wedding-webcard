@@ -14,6 +14,21 @@ import config from '../data/config.json';
 
 // Helper function to render the correct icon based on string name
 const renderIcon = (iconName) => {
+  if (typeof iconName === 'string' && (iconName.startsWith('/') || iconName.includes('.'))) {
+    return (
+      <img
+        src={iconName}
+        alt=""
+        style={{
+          width: '46px',
+          height: '46px',
+          objectFit: 'contain',
+          filter: 'drop-shadow(0 2px 5px rgba(196, 109, 130, 0.2))',
+          transition: 'transform 0.3s ease'
+        }}
+      />
+    );
+  }
   switch (iconName) {
     case 'Clock': return <Clock size={24} />;
     case 'Coffee': return <Coffee size={24} />;
@@ -82,17 +97,18 @@ const Timeline = () => {
                   left: '50%',
                   top: '20px',
                   transform: 'translate(-50%, -50%)',
-                  width: '56px',
-                  height: '56px',
+                  width: '64px',
+                  height: '64px',
                   backgroundColor: 'var(--white)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '2px solid var(--primary-dark)',
+                  border: '2px solid var(--primary-light)',
                   color: 'var(--primary-dark)',
                   zIndex: 2,
-                  boxShadow: '0 8px 25px rgba(196, 109, 130, 0.35), 0 0 0 6px rgba(232, 168, 184, 0.25)'
+                  boxShadow: '0 8px 24px rgba(196, 109, 130, 0.22), 0 0 0 5px rgba(255, 255, 255, 0.9), 0 0 0 7px rgba(232, 168, 184, 0.25)',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}>
                   {renderIcon(item.icon)}
                 </div>
@@ -130,6 +146,12 @@ const Timeline = () => {
           }
           .timeline-icon {
             left: 35px !important;
+            width: 54px !important;
+            height: 54px !important;
+          }
+          .timeline-icon img {
+            width: 38px !important;
+            height: 38px !important;
           }
           .timeline-content {
             width: calc(100% - 85px) !important;

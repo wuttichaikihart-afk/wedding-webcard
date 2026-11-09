@@ -747,16 +747,28 @@ const AdminPanel = () => {
                     onChange={(e) => handleTimelineChange(index, 'icon', e.target.value)} 
                     style={{ width: '100%', padding: '6px', borderRadius: '4px', border: '1px solid #ccc' }}
                   >
-                    <option value="Heart">❤️ หัวใจ (Heart)</option>
-                    <option value="Clock">⏰ นาฬิกา (Clock)</option>
-                    <option value="Coffee">☕ กาแฟ/ของว่าง (Coffee)</option>
-                    <option value="Utensils">🍽️ อาหาร/จัดเลี้ยง (Utensils)</option>
-                    <option value="Music">🎵 ดนตรี/ปาร์ตี้ (Music)</option>
-                    <option value="Camera">📸 ถ่ายรูป (Camera)</option>
-                    <option value="GlassWater">🥂 ดื่มฉลอง (GlassWater)</option>
-                    <option value="PartyPopper">🎉 ปาร์ตี้ฉลอง (PartyPopper)</option>
-                    <option value="Gift">🎁 มอบของขวัญ (Gift)</option>
-                    <option value="Gem">แหวนเพชร (Gem)</option>
+                    <optgroup label="🎨 ภาพวาดสีน้ำงานแต่ง (Watercolor)">
+                      <option value="/icon_monk.png">🪷 พิธีสงฆ์ (บาตรพระ & บัว)</option>
+                      <option value="/icon_khanmaak.png">🧺 แห่ขันหมาก (พานขันหมาก)</option>
+                      <option value="/icon_ring.png">💍 สวมแหวนหมั้น / สินสอด</option>
+                      <option value="/icon_baisri.png">🧵 บายศรีสู่ขวัญ / สายสิญจน์</option>
+                      <option value="/icon_malai.png">🌸 รับไหว้ (พวงมาลัยข้อพระกร)</option>
+                      <option value="/icon_conch.png">🐚 ผูกแขน / หลั่งน้ำสังข์ (หอยสังข์)</option>
+                      <option value="/icon_cake.png">🎂 ฉลองมงคลสมรส (เค้กแต่งงาน)</option>
+                      <option value="/icon_party.png">🎤 After Party (ไมค์ดนตรี)</option>
+                    </optgroup>
+                    <optgroup label="ไอคอนทั่วไป (Vector Icons)">
+                      <option value="Heart">❤️ หัวใจ (Heart)</option>
+                      <option value="Clock">⏰ นาฬิกา (Clock)</option>
+                      <option value="Coffee">☕ กาแฟ/ของว่าง (Coffee)</option>
+                      <option value="Utensils">🍽️ อาหาร/จัดเลี้ยง (Utensils)</option>
+                      <option value="Music">🎵 ดนตรี/ปาร์ตี้ (Music)</option>
+                      <option value="Camera">📸 ถ่ายรูป (Camera)</option>
+                      <option value="GlassWater">🥂 ดื่มฉลอง (GlassWater)</option>
+                      <option value="PartyPopper">🎉 ปาร์ตี้ฉลอง (PartyPopper)</option>
+                      <option value="Gift">🎁 มอบของขวัญ (Gift)</option>
+                      <option value="Gem">แหวนเพชร (Gem)</option>
+                    </optgroup>
                   </select>
                 </div>
               </div>

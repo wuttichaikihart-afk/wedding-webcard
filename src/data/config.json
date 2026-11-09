@@ -39,49 +39,49 @@
       "time": "07:09",
       "title": "พิธีสงฆ์",
       "description": "",
-      "icon": "Clock"
+      "icon": "/icon_monk.png"
     },
     {
       "time": "09:09",
       "title": "แห่ขันหมาก",
       "description": "",
-      "icon": "Heart"
+      "icon": "/icon_khanmaak.png"
     },
     {
       "time": "09:39",
       "title": "พิธีปูเรียงสินสอด สวมแหวนหมั้น รับไหว้",
       "description": "",
-      "icon": "Heart"
+      "icon": "/icon_ring.png"
     },
     {
       "time": "10:00",
       "title": "บายศรีสู่ขวัญ",
       "description": "",
-      "icon": "Heart"
+      "icon": "/icon_baisri.png"
     },
     {
       "time": "10:30",
       "title": "รับไหว้",
       "description": "",
-      "icon": "Heart"
+      "icon": "/icon_malai.png"
     },
     {
       "time": "11:00",
-      "title": "ผูกแขน-หลั่งน้ำสังข์",
+      "title": "ผูกแขน",
       "description": "",
-      "icon": "Heart"
+      "icon": "/icon_conch.png"
     },
     {
       "time": "18:00",
       "title": "ฉลองมงคลสมรส",
       "description": "",
-      "icon": "Utensils"
+      "icon": "/icon_cake.png"
     },
     {
       "time": "19:00",
       "title": "After Party",
       "description": "สนุกสนานกับวงดนตรีสด",
-      "icon": "Music"
+      "icon": "/icon_party.png"
     }
   ],
   "location": {

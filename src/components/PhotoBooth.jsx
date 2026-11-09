@@ -50,13 +50,37 @@ const FRAMES = [
   }
 ];
 
-// Color & Camera Filters
+// Color & Camera Filters with Beauty Skin Smoothing (TikTok Style)
 const FILTERS = [
-  { name: 'ปกติ', value: 'none' },
+  { 
+    name: '🌸 หน้าใส TikTok', 
+    value: 'brightness(1.10) contrast(0.96) saturate(1.08)',
+    beauty: true,
+    beautyAlpha: 0.38,
+    beautyBlend: 'screen',
+    beautyFilter: 'blur(12px) brightness(1.18) contrast(0.90) saturate(1.06)'
+  },
+  { 
+    name: '✨ เนียนไร้สิว', 
+    value: 'brightness(1.08) contrast(0.94) saturate(1.05)',
+    beauty: true,
+    beautyAlpha: 0.35,
+    beautyBlend: 'source-over',
+    beautyFilter: 'blur(10px) brightness(1.12) contrast(0.92)'
+  },
+  { 
+    name: '🍑 ผิวอมชมพู', 
+    value: 'brightness(1.09) contrast(0.97) saturate(1.14) sepia(0.06) hue-rotate(-8deg)',
+    beauty: true,
+    beautyAlpha: 0.36,
+    beautyBlend: 'screen',
+    beautyFilter: 'blur(12px) brightness(1.16) contrast(0.90) saturate(1.12) sepia(0.08) hue-rotate(-8deg)'
+  },
   { name: '✨ ผิวผ่อง (Glow)', value: 'brightness(1.06) contrast(1.02) saturate(1.08)' },
   { name: '☕ โทนอุ่น (Warm)', value: 'sepia(0.18) saturate(1.15) brightness(1.02)' },
   { name: '🎞️ ฟิล์ม (Film)', value: 'contrast(1.15) saturate(1.2) sepia(0.15)' },
-  { name: '🖤 ขาวดำ (B&W)', value: 'grayscale(100%) contrast(1.2)' }
+  { name: '🖤 ขาวดำ (B&W)', value: 'grayscale(100%) contrast(1.2)' },
+  { name: 'ปกติ', value: 'none' }
 ];
 
 const PhotoBooth = () => {
@@ -238,6 +262,22 @@ const PhotoBooth = () => {
     }
     ctx.restore();
 
+    // 1.5 Beauty Skin Smoothing & Acne Erasing Layer (TikTok / Smooth Skin)
+    if (activeFilter.beauty) {
+      ctx.save();
+      ctx.globalAlpha = activeFilter.beautyAlpha || 0.36;
+      ctx.globalCompositeOperation = activeFilter.beautyBlend || 'screen';
+      ctx.filter = activeFilter.beautyFilter || 'blur(12px) brightness(1.16) contrast(0.90) saturate(1.06)';
+      if (facingMode === 'user') {
+        ctx.translate(targetWidth, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, targetWidth, targetHeight);
+      } else {
+        ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, targetWidth, targetHeight);
+      }
+      ctx.restore();
+    }
+
     // 2. Composite Transparent Wedding Frame (Unmirrored)
     if (activeFrame && activeFrame.src) {
       try {
@@ -310,6 +350,16 @@ const PhotoBooth = () => {
       ctx.filter = activeFilter.value;
       ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, targetWidth, targetHeight);
       ctx.restore();
+
+      // Beauty Skin Smoothing & Acne Erasing Layer for uploaded photo
+      if (activeFilter.beauty) {
+        ctx.save();
+        ctx.globalAlpha = activeFilter.beautyAlpha || 0.36;
+        ctx.globalCompositeOperation = activeFilter.beautyBlend || 'screen';
+        ctx.filter = activeFilter.beautyFilter || 'blur(12px) brightness(1.16) contrast(0.90) saturate(1.06)';
+        ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, targetWidth, targetHeight);
+        ctx.restore();
+      }
 
       if (activeFrame && activeFrame.src) {
         try {
@@ -892,6 +942,28 @@ const PhotoBooth = () => {
                 }}
               />
 
+              {/* Real-time Beauty Soft Glow Overlay (TikTok / Smooth Skin) */}
+              {activeFilter.beauty && (
+                <div 
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    pointerEvents: 'none',
+                    zIndex: 4,
+                    background: activeFilter.name.includes('อมชมพู')
+                      ? 'radial-gradient(ellipse at 50% 45%, rgba(255, 215, 225, 0.24) 0%, rgba(255, 235, 240, 0.12) 45%, rgba(255, 245, 248, 0.03) 75%, transparent 100%)'
+                      : 'radial-gradient(ellipse at 50% 45%, rgba(255, 248, 250, 0.26) 0%, rgba(255, 238, 242, 0.12) 45%, rgba(255, 245, 248, 0.03) 75%, transparent 100%)',
+                    backdropFilter: 'blur(0.8px) brightness(1.03) contrast(0.96)',
+                    WebkitBackdropFilter: 'blur(0.8px) brightness(1.03) contrast(0.96)',
+                    mixBlendMode: 'screen',
+                    transition: 'all 0.3s ease'
+                  }}
+                />
+              )}
+
               {/* Real-time Wedding Frame Overlay (Never Mirrored) */}
               {activeFrame && activeFrame.src && (
                 <img 
@@ -978,28 +1050,44 @@ const PhotoBooth = () => {
             {/* Hidden canvas for compositing */}
             <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-            {/* Color Filter Selector */}
-            <div style={{ display: 'flex', overflowX: 'auto', gap: '8px', paddingBottom: '8px', marginBottom: '14px', justifyContent: 'center' }}>
-              {FILTERS.map(filter => (
-                <button 
-                  key={filter.name}
-                  onClick={() => setActiveFilter(filter)}
-                  style={{ 
-                    padding: '6px 12px', 
-                    borderRadius: '20px', 
-                    border: '1px solid',
-                    borderColor: activeFilter.name === filter.name ? '#c46d82' : '#f0c4cf',
-                    backgroundColor: activeFilter.name === filter.name ? '#c46d82' : '#fff',
-                    color: activeFilter.name === filter.name ? '#fff' : '#666',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    fontSize: '0.8rem',
-                    fontWeight: activeFilter.name === filter.name ? '600' : '400'
-                  }}
-                >
-                  {filter.name}
-                </button>
-              ))}
+            {/* Color Filter Selector (Horizontal Scroll with TikTok Beauty Options) */}
+            <div style={{ 
+              display: 'flex', 
+              overflowX: 'auto', 
+              gap: '8px', 
+              padding: '4px 16px 10px', 
+              marginBottom: '14px', 
+              justifyContent: 'flex-start',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              maxWidth: '100%'
+            }}>
+              {FILTERS.map(filter => {
+                const isSelected = activeFilter.name === filter.name;
+                return (
+                  <button 
+                    key={filter.name}
+                    onClick={() => setActiveFilter(filter)}
+                    style={{ 
+                      padding: '7px 14px', 
+                      borderRadius: '20px', 
+                      border: '1px solid',
+                      borderColor: isSelected ? '#c46d82' : '#f0c4cf',
+                      backgroundColor: isSelected ? '#c46d82' : '#fff',
+                      color: isSelected ? '#fff' : '#666',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      fontSize: '0.82rem',
+                      fontWeight: isSelected ? '600' : '400',
+                      boxShadow: isSelected ? '0 4px 12px rgba(196, 109, 130, 0.3)' : '0 1px 3px rgba(0,0,0,0.05)',
+                      transition: 'all 0.2s ease',
+                      flexShrink: 0
+                    }}
+                  >
+                    {filter.name}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Big Shutter Button + Upload from Gallery */}
