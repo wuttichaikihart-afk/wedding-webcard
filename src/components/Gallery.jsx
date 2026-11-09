@@ -122,51 +122,28 @@ const Gallery = () => {
             .wedding-masonry-item {
               break-inside: avoid;
               margin-bottom: 16px;
-              border-radius: 14px;
+              border-radius: 12px;
               overflow: hidden;
               position: relative;
               cursor: pointer;
-              background-color: #ffffff;
-              box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-              border: 1px solid rgba(232, 168, 184, 0.35);
-              transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.35s ease;
+              background-color: transparent;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
               display: block;
+              transition: opacity 0.2s ease;
             }
             @media (max-width: 680px) {
               .wedding-masonry-item {
                 margin-bottom: 10px;
-                border-radius: 10px;
+                border-radius: 8px;
               }
             }
-            .wedding-masonry-item:hover {
-              transform: translateY(-5px);
-              box-shadow: 0 12px 28px rgba(196, 109, 130, 0.25);
-              border-color: var(--primary);
+            .wedding-masonry-item:active {
+              opacity: 0.9;
             }
             .wedding-masonry-img {
               width: 100%;
               height: auto;
               display: block;
-              transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
-            }
-            .wedding-masonry-item:hover .wedding-masonry-img {
-              transform: scale(1.04);
-            }
-            .wedding-masonry-overlay {
-              position: absolute;
-              inset: 0;
-              background: linear-gradient(to top, rgba(74, 48, 56, 0.7) 0%, rgba(74, 48, 56, 0.1) 50%, transparent 100%);
-              opacity: 0;
-              transition: opacity 0.3s ease;
-              display: flex;
-              align-items: flex-end;
-              justify-content: space-between;
-              padding: 12px 14px;
-              color: #ffffff;
-              pointer-events: none;
-            }
-            .wedding-masonry-item:hover .wedding-masonry-overlay {
-              opacity: 1;
             }
           `}</style>
 
@@ -176,7 +153,7 @@ const Gallery = () => {
                 key={img.id}
                 className="wedding-masonry-item"
                 onClick={() => setSelectedIndex(index)}
-                title={`คลิกเพื่อดูรูปภาพขนาดใหญ่ (ภาพที่ ${index + 1})`}
+                title={`คลิกเพื่อดูรูปภาพขนาดใหญ่`}
               >
                 <img
                   src={img.src}
@@ -184,23 +161,6 @@ const Gallery = () => {
                   className="wedding-masonry-img"
                   loading="lazy"
                 />
-                <div className="wedding-masonry-overlay">
-                  <span style={{ fontSize: '0.8rem', fontWeight: '500', letterSpacing: '0.5px' }}>
-                    Toey &amp; Taii #{img.num}
-                  </span>
-                  <span style={{ 
-                    width: '28px', 
-                    height: '28px', 
-                    borderRadius: '50%', 
-                    backgroundColor: 'rgba(255,255,255,0.25)', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    backdropFilter: 'blur(4px)'
-                  }}>
-                    <Maximize2 size={14} />
-                  </span>
-                </div>
               </div>
             ))}
           </div>
