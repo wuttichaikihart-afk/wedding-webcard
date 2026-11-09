@@ -125,9 +125,9 @@ const LocationMap = () => {
               </a>
 
               {/* ที่พักที่ 3 */}
-              <a href="https://www.google.com/maps/search/?api=1&query=13.721597,102.460855" target="_blank" rel="noopener noreferrer" 
+              <a href="https://maps.app.goo.gl/FH6Ga9Gi87ZJkgso8" target="_blank" rel="noopener noreferrer" 
                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', border: '1px solid var(--border-color)', borderRadius: '12px', textDecoration: 'none', color: 'var(--text-color)' }}>
-                <span style={{ fontWeight: 500 }}>3. เรือนพักสุวรรณา รีสอร์ท</span>
+                <span style={{ fontWeight: 500 }}>3. มูนสมาย</span>
                 <MapPin size={18} color="var(--primary)" />
               </a>
 
