@@ -22,6 +22,7 @@ const modules = import.meta.glob(['../assets/pic*.jpg', '../assets/pic*.JPG', '.
 
 // จัดเรียงรูปตามตัวเลข (1, 2, 3, ...)
 const images = Object.keys(modules)
+  .filter(key => !key.includes('MacBook') && !key.includes('conflict'))
   .sort((a, b) => {
     const matchA = a.match(/(?:pic|\/)?(\d+)\.(jpg|png|jpeg|webp)/i);
     const matchB = b.match(/(?:pic|\/)?(\d+)\.(jpg|png|jpeg|webp)/i);

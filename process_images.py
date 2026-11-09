@@ -17,7 +17,12 @@ for f in os.listdir(SRC_DIR):
     if ext in valid_exts:
         img_files.append(os.path.join(SRC_DIR, f))
 
-img_files.sort()
+import re
+
+def natural_key(text):
+    return [int(c) if c.isdigit() else c.lower() for c in re.split(r'(\d+)', text)]
+
+img_files.sort(key=natural_key)
 
 if not img_files:
     print(f"⚠️ ยังไม่พบรูปภาพในโฟลเดอร์: {SRC_DIR}")
