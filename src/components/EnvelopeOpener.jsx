@@ -89,14 +89,16 @@ const EnvelopeOpener = ({ onOpen }) => {
               <p style={{
                 color: '#ffffff',
                 fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(1.1rem, 4vw, 1.35rem)',
-                textTransform: 'uppercase',
-                letterSpacing: '6px',
+                fontSize: 'clamp(0.95rem, 3.2vw, 1.2rem)',
+                letterSpacing: '2px',
                 textShadow: '0 2px 10px rgba(0,0,0,0.8), 0 0 25px rgba(0,0,0,0.5)',
                 fontWeight: 400,
-                margin: 0
+                margin: 0,
+                textAlign: 'center',
+                padding: '0 16px',
+                lineHeight: '1.4'
               }}>
-                {config.envelope?.topText || "You're Invited"}
+                {config.envelope?.topText || "You're invited to celebrate our wedding day!"}
               </p>
             </motion.div>
 
