@@ -62,10 +62,11 @@ const ScratchCard = () => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [hostModalOpen, setHostModalOpen] = useState(() => {
+  const isHostParam = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return new URLSearchParams(window.location.search).get('host') === '1';
-  });
+  }, []);
+  const [hostModalOpen, setHostModalOpen] = useState(isHostParam);
   const [drawing, setDrawing] = useState(false);
   const [testRunNonce, setTestRunNonce] = useState(0);
 
@@ -290,25 +291,27 @@ const ScratchCard = () => {
             {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
           </button>
 
-          <button
-            type="button"
-            onClick={() => setHostModalOpen(true)}
-            style={{
-              minHeight: '44px',
-              padding: '0 14px',
-              borderRadius: '22px',
-              backgroundColor: 'rgba(255, 255, 255, 0.88)',
-              border: '1px solid #f0c4cf',
-              color: '#4a3038',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <SlidersHorizontal size={15} color="#c46d82" /> พิธีกร/รางวัล
-          </button>
+          {isHostParam && (
+            <button
+              type="button"
+              onClick={() => setHostModalOpen(true)}
+              style={{
+                minHeight: '44px',
+                padding: '0 14px',
+                borderRadius: '22px',
+                backgroundColor: 'rgba(255, 255, 255, 0.88)',
+                border: '1px solid #f0c4cf',
+                color: '#4a3038',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <SlidersHorizontal size={15} color="#c46d82" /> พิธีกร/รางวัล
+            </button>
+          )}
         </div>
       </header>
 
