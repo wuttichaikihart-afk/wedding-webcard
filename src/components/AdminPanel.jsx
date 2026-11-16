@@ -285,6 +285,7 @@ const AdminPanel = () => {
         <button onClick={() => setActiveTab('config')} style={{ padding: '10px 20px', backgroundColor: activeTab === 'config' ? 'var(--primary)' : '#eee', color: activeTab === 'config' ? 'white' : '#333', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>⚙️ ตั้งค่าเว็บไซต์</button>
         <button onClick={() => setActiveTab('rsvp')} style={{ padding: '10px 20px', backgroundColor: activeTab === 'rsvp' ? 'var(--primary)' : '#eee', color: activeTab === 'rsvp' ? 'white' : '#333', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>💌 ข้อมูลผู้ตอบรับ (RSVP)</button>
         <button onClick={() => setActiveTab('guestbook')} style={{ padding: '10px 20px', backgroundColor: activeTab === 'guestbook' ? 'var(--primary)' : '#eee', color: activeTab === 'guestbook' ? 'white' : '#333', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>📖 สมุดอวยพร</button>
+        <a href="/scratch?host=1" style={{ padding: '10px 20px', backgroundColor: '#fff5f7', color: '#c46d82', border: '1.5px solid #e8a8b8', borderRadius: '5px', textDecoration: 'none', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center' }}>🎫 เกมการ์ดขูด After Party</a>
       </div>
 
       {activeTab === 'rsvp' && (

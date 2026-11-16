@@ -22,6 +22,7 @@ import PhotoBooth from './components/PhotoBooth';
 import HostGallery from './components/HostGallery';
 import PrintStation from './components/PrintStation';
 import QRCodeStandee from './components/QRCodeStandee';
+import ScratchCard from './components/ScratchCard';
 import configData from './data/config.json';               // ข้อมูลและสีธีมจากระบบหลังบ้าน
 
 // คอมโพเนนต์หน้าเว็บหลัก
@@ -129,6 +130,7 @@ function App() {
         <Route path="/memories" element={<HostGallery />} />
         <Route path="/print" element={<PrintStation />} />
         <Route path="/qrcode" element={<QRCodeStandee />} />
+        <Route path="/scratch" element={<ScratchCard />} />
         <Route path="/" element={<MainSite />} />
       </Routes>
     </Router>
