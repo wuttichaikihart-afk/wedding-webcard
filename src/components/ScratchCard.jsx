@@ -13,7 +13,8 @@ import {
   Trophy,
   RotateCcw,
   Camera,
-  Clock
+  Clock,
+  ShieldAlert
 } from 'lucide-react';
 import { supabase } from '../supabaseClient';
 import config from '../data/config.json';
@@ -28,6 +29,7 @@ import {
   loadScratchState,
   createOrFetchCard,
   markCardRevealed,
+  deleteScratchPlay,
   updateHostSettings,
   clearLocalDeviceCard,
   playRevealSound,
@@ -51,6 +53,8 @@ const ScratchCard = () => {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [plays, setPlays] = useState([]);
   const [isCloudSynced, setIsCloudSynced] = useState(false);
+  const [needsSqlUpgrade, setNeedsSqlUpgrade] = useState(false);
+  const [ipBlockedInfo, setIpBlockedInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [guestName, setGuestName] = useState('');
@@ -92,6 +96,7 @@ const ScratchCard = () => {
   const refreshState = useCallback(async () => {
     const state = await loadScratchState();
     setIsCloudSynced(state.isCloudSynced);
+    setNeedsSqlUpgrade(Boolean(state.needsSqlUpgrade));
     setSettings(state.settings);
     setPlays(state.plays);
 
@@ -146,12 +151,13 @@ const ScratchCard = () => {
     if (!guestName.trim() || drawing) return;
 
     skipAutoRestoreRef.current = false;
+    setIpBlockedInfo(null);
     setDrawing(true);
     setFoilReady(false);
     setScratchPct(0);
     setShowConfetti(false);
 
-    const newCard = await createOrFetchCard({
+    const outcome = await createOrFetchCard({
       guestName: guestName.trim(),
       tableNo: tableNo.trim(),
       deviceId,
@@ -160,12 +166,39 @@ const ScratchCard = () => {
       settings
     });
 
-    setCard(newCard);
-    setIsRevealed(Boolean(newCard.revealed));
-    if (!newCard.is_demo) {
+    if (outcome?.status === 'ip_blocked') {
+      setIpBlockedInfo(outcome);
+      setDrawing(false);
+      return;
+    }
+
+    if (outcome?.status === 'closed') {
       await refreshState();
+      setDrawing(false);
+      return;
+    }
+
+    const newCard = outcome?.card || outcome;
+    if (newCard) {
+      setCard(newCard);
+      setIsRevealed(Boolean(newCard.revealed));
+      if (!newCard.is_demo) {
+        await refreshState();
+      }
     }
     setDrawing(false);
+  };
+
+  const handleDeletePlay = async (playId) => {
+    await deleteScratchPlay(playId, isCloudSynced);
+    if (card?.id === playId) {
+      setCard(null);
+      setIsRevealed(false);
+      setFoilReady(false);
+      setScratchPct(0);
+    }
+    setIpBlockedInfo(null);
+    await refreshState();
   };
 
   const handleReveal = useCallback(async () => {
@@ -390,6 +423,75 @@ const ScratchCard = () => {
               รอสัญญาณจากพิธีกรบนเวทีเพื่อนับถอยหลังเปิดขูดพร้อมกันทั้งห้องนะครับ
             </p>
           </motion.div>
+        ) : ipBlockedInfo ? (
+          /* IP Blocked Notice (1 Person / 1 IP Limit) */
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '24px',
+              padding: '30px 22px',
+              textAlign: 'center',
+              border: '2px solid #fecdd3',
+              boxShadow: '0 16px 40px rgba(225, 29, 72, 0.12)'
+            }}
+          >
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              backgroundColor: '#fff1f2',
+              color: '#e11d48',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 14px'
+            }}>
+              <ShieldAlert size={32} />
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-body)', fontSize: '1.22rem', color: '#881337', margin: '0 0 8px' }}>
+              เครือข่าย (IP) นี้ใช้สิทธิ์ขูดครบแล้ว
+            </h2>
+            <p style={{ fontSize: '0.92rem', color: '#4a3038', lineHeight: 1.6, margin: '0 0 12px' }}>
+              รอบนี้จำกัด <strong>1 คน / 1 สิทธิ์ (IP: {ipBlockedInfo.blocked_ip})</strong>
+              {ipBlockedInfo.blocked_by_name && (
+                <>
+                  <br />
+                  ใช้สิทธิ์แล้วโดยคุณ: <strong style={{ color: '#c46d82' }}>{ipBlockedInfo.blocked_by_name}</strong>
+                </>
+              )}
+            </p>
+            <div style={{
+              backgroundColor: '#fff5f7',
+              borderRadius: '14px',
+              padding: '12px 14px',
+              fontSize: '0.84rem',
+              color: '#6b4f57',
+              lineHeight: 1.55,
+              border: '1px dashed #f0c4cf',
+              marginBottom: '18px'
+            }}>
+              💡 <strong>กรณีมาด้วยกันและเกาะ Wi-Fi เดียวกัน:</strong><br />
+              กรุณา<strong>ปิด Wi-Fi</strong> แล้วเปลี่ยนมาใช้เน็ตมือถือ (4G/5G) ของตัวเอง จากนั้นกดปุ่มลองใหม่ด้านล่างได้เลยครับ
+            </div>
+            <button
+              type="button"
+              onClick={() => setIpBlockedInfo(null)}
+              style={{
+                width: '100%',
+                minHeight: '48px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #e8a8b8 0%, #c46d82 100%)',
+                color: '#fff',
+                fontWeight: 600,
+                fontSize: '0.98rem',
+                cursor: 'pointer'
+              }}
+            >
+              🔄 ลองใหม่อีกครั้ง
+            </button>
+          </motion.div>
         ) : !card ? (
           /* STEP 1: GUEST ENTRY FORM */
           <motion.div
@@ -557,6 +659,12 @@ const ScratchCard = () => {
               >
                 {drawing ? '⏳ กำลังออกการ์ด...' : '🎫 รับการ์ดขูดลุ้นโชคเลย!'}
               </button>
+
+              <p style={{ textAlign: 'center', fontSize: '0.78rem', color: '#9c7d85', margin: '12px 0 0', lineHeight: 1.45 }}>
+                {settings.ip_limit === 1
+                  ? '🔒 จำกัดสิทธิ์ 1 คน / 1 เครื่อง / 1 IP เท่านั้น (แนะนำให้ใช้เน็ต 4G/5G ส่วนตัว)'
+                  : '🔒 จำกัดสิทธิ์ 1 เครื่อง ต่อ 1 ครั้งในแต่ละรอบ'}
+              </p>
             </form>
           </motion.div>
         ) : (
@@ -907,7 +1015,9 @@ const ScratchCard = () => {
         settings={settings}
         plays={plays}
         isCloudSynced={isCloudSynced}
+        needsSqlUpgrade={needsSqlUpgrade}
         onUpdateSettings={handleHostUpdateSettings}
+        onDeletePlay={handleDeletePlay}
         onResetLocalTest={handleTryAgainTest}
       />
     </div>
